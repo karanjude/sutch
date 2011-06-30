@@ -1,0 +1,179 @@
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/util
+END
+SuffixStringMatcher.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/util/SuffixStringMatcher.java
+END
+IdentityPageReducer.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/util/IdentityPageReducer.java
+END
+URLUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/util/URLUtil.java
+END
+HadoopFSUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/util/HadoopFSUtil.java
+END
+StringUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/util/StringUtil.java
+END
+WebPageWritable.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/util/WebPageWritable.java
+END
+CommandRunner.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/util/CommandRunner.java
+END
+NutchConfiguration.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/util/NutchConfiguration.java
+END
+ToolUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/util/ToolUtil.java
+END
+NutchJob.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/repos/asf/!svn/ver/1025963/nutch/trunk/src/java/org/apache/nutch/util/NutchJob.java
+END
+DomUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/repos/asf/!svn/ver/983885/nutch/trunk/src/java/org/apache/nutch/util/DomUtil.java
+END
+LogUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repos/asf/!svn/ver/1028235/nutch/trunk/src/java/org/apache/nutch/util/LogUtil.java
+END
+NutchTool.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/util/NutchTool.java
+END
+EncodingDetector.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/983885/nutch/trunk/src/java/org/apache/nutch/util/EncodingDetector.java
+END
+NutchJobConf.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/util/NutchJobConf.java
+END
+MimeUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/util/MimeUtil.java
+END
+DeflateUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/repos/asf/!svn/ver/983885/nutch/trunk/src/java/org/apache/nutch/util/DeflateUtils.java
+END
+TableUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/util/TableUtil.java
+END
+TimingUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/util/TimingUtil.java
+END
+LockUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/util/LockUtil.java
+END
+Bytes.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/repos/asf/!svn/ver/983885/nutch/trunk/src/java/org/apache/nutch/util/Bytes.java
+END
+GenericWritableConfigurable.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/util/GenericWritableConfigurable.java
+END
+PrefixStringMatcher.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/util/PrefixStringMatcher.java
+END
+FSUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/util/FSUtils.java
+END
+GZIPUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/repos/asf/!svn/ver/983885/nutch/trunk/src/java/org/apache/nutch/util/GZIPUtils.java
+END
+ObjectCache.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/repos/asf/!svn/ver/983885/nutch/trunk/src/java/org/apache/nutch/util/ObjectCache.java
+END
+NodeWalker.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/util/NodeWalker.java
+END
+Pair.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/util/Pair.java
+END
+TrieStringMatcher.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/util/TrieStringMatcher.java
+END

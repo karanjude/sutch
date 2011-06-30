@@ -1,0 +1,149 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/crawl
+END
+Crawler.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/crawl/Crawler.java
+END
+GeneratorReducer.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/crawl/GeneratorReducer.java
+END
+Signature.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/crawl/Signature.java
+END
+DbUpdateReducer.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/crawl/DbUpdateReducer.java
+END
+DbUpdaterJob.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/crawl/DbUpdaterJob.java
+END
+FetchSchedule.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/crawl/FetchSchedule.java
+END
+MD5Signature.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/crawl/MD5Signature.java
+END
+InjectorJob.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/crawl/InjectorJob.java
+END
+WebTableReader.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/crawl/WebTableReader.java
+END
+NutchWritable.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/crawl/NutchWritable.java
+END
+DefaultFetchSchedule.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/crawl/DefaultFetchSchedule.java
+END
+CrawlStatus.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/crawl/CrawlStatus.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/crawl/package.html
+END
+GeneratorJob.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/crawl/GeneratorJob.java
+END
+URLPartitioner.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/983885/nutch/trunk/src/java/org/apache/nutch/crawl/URLPartitioner.java
+END
+AdaptiveFetchSchedule.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/crawl/AdaptiveFetchSchedule.java
+END
+TextProfileSignature.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/crawl/TextProfileSignature.java
+END
+SignatureComparator.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/crawl/SignatureComparator.java
+END
+SignatureFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/983885/nutch/trunk/src/java/org/apache/nutch/crawl/SignatureFactory.java
+END
+AbstractFetchSchedule.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/983885/nutch/trunk/src/java/org/apache/nutch/crawl/AbstractFetchSchedule.java
+END
+GeneratorMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/crawl/GeneratorMapper.java
+END
+DbUpdateMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/crawl/DbUpdateMapper.java
+END
+URLWebPage.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/crawl/URLWebPage.java
+END
+FetchScheduleFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/983885/nutch/trunk/src/java/org/apache/nutch/crawl/FetchScheduleFactory.java
+END

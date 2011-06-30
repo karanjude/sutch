@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/repos/asf/!svn/ver/1055608/nutch/trunk/src/plugin/urlfilter-domain
+END
+ivy.xml
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/urlfilter-domain/ivy.xml
+END
+plugin.xml
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/urlfilter-domain/plugin.xml
+END
+build.xml
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/urlfilter-domain/build.xml
+END

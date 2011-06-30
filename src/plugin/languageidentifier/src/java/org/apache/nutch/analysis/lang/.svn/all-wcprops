@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/1051985/nutch/trunk/src/plugin/languageidentifier/src/java/org/apache/nutch/analysis/lang
+END
+LanguageIndexingFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/repos/asf/!svn/ver/1051985/nutch/trunk/src/plugin/languageidentifier/src/java/org/apache/nutch/analysis/lang/LanguageIndexingFilter.java
+END
+HTMLLanguageParser.java
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/repos/asf/!svn/ver/1003608/nutch/trunk/src/plugin/languageidentifier/src/java/org/apache/nutch/analysis/lang/HTMLLanguageParser.java
+END
+langmappings.properties
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/languageidentifier/src/java/org/apache/nutch/analysis/lang/langmappings.properties
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/languageidentifier/src/java/org/apache/nutch/analysis/lang/package.html
+END

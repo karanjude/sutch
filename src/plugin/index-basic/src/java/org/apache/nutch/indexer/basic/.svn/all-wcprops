@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1028474/nutch/trunk/src/plugin/index-basic/src/java/org/apache/nutch/indexer/basic
+END
+BasicIndexingFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/repos/asf/!svn/ver/1028474/nutch/trunk/src/plugin/index-basic/src/java/org/apache/nutch/indexer/basic/BasicIndexingFilter.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/index-basic/src/java/org/apache/nutch/indexer/basic/package.html
+END

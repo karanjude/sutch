@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/983321/nutch/trunk/src/testresources/testcrawl/linkdb/current/part-00000
+END
+index
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/983321/nutch/trunk/src/testresources/testcrawl/linkdb/current/part-00000/index
+END
+data
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/983321/nutch/trunk/src/testresources/testcrawl/linkdb/current/part-00000/data
+END
+.index.crc
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/983321/nutch/trunk/src/testresources/testcrawl/linkdb/current/part-00000/.index.crc
+END
+.data.crc
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/983321/nutch/trunk/src/testresources/testcrawl/linkdb/current/part-00000/.data.crc
+END

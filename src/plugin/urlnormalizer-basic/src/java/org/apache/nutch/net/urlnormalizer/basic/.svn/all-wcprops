@@ -1,0 +1,11 @@
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/repos/asf/!svn/ver/1055520/nutch/trunk/src/plugin/urlnormalizer-basic/src/java/org/apache/nutch/net/urlnormalizer/basic
+END
+BasicURLNormalizer.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/repos/asf/!svn/ver/1055520/nutch/trunk/src/plugin/urlnormalizer-basic/src/java/org/apache/nutch/net/urlnormalizer/basic/BasicURLNormalizer.java
+END

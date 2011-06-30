@@ -1,0 +1,113 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/parse
+END
+ParseStatusUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/parse/ParseStatusUtils.java
+END
+ParsePluginsReader.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/983885/nutch/trunk/src/java/org/apache/nutch/parse/ParsePluginsReader.java
+END
+ParseFilters.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/984352/nutch/trunk/src/java/org/apache/nutch/parse/ParseFilters.java
+END
+ParseUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/repos/asf/!svn/ver/983885/nutch/trunk/src/java/org/apache/nutch/parse/ParseUtil.java
+END
+ParserNotFound.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/parse/ParserNotFound.java
+END
+Parse.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/parse/Parse.java
+END
+ParseFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/repos/asf/!svn/ver/984352/nutch/trunk/src/java/org/apache/nutch/parse/ParseFilter.java
+END
+ParserChecker.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/983885/nutch/trunk/src/java/org/apache/nutch/parse/ParserChecker.java
+END
+OutlinkExtractor.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/983885/nutch/trunk/src/java/org/apache/nutch/parse/OutlinkExtractor.java
+END
+ParserFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/983885/nutch/trunk/src/java/org/apache/nutch/parse/ParserFactory.java
+END
+ParsePluginList.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/parse/ParsePluginList.java
+END
+Outlink.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/parse/Outlink.java
+END
+ParserJob.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/parse/ParserJob.java
+END
+ParseException.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/parse/ParseException.java
+END
+ParseCallable.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/parse/ParseCallable.java
+END
+HTMLMetaTags.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/parse/HTMLMetaTags.java
+END
+Parser.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/parse/Parser.java
+END
+ParseStatusCodes.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/parse/ParseStatusCodes.java
+END

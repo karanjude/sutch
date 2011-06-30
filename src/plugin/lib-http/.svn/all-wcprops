@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/repos/asf/!svn/ver/987132/nutch/trunk/src/plugin/lib-http
+END
+ivy.xml
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/lib-http/ivy.xml
+END
+plugin.xml
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/lib-http/plugin.xml
+END
+build.xml
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/lib-http/build.xml
+END

@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/api
+END
+AdminResource.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/api/AdminResource.java
+END
+ConfManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/api/ConfManager.java
+END
+JobResource.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/api/JobResource.java
+END
+NutchApp.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/api/NutchApp.java
+END
+Params.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/api/Params.java
+END
+JobManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/api/JobManager.java
+END
+DbReader.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/api/DbReader.java
+END
+NutchServer.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/api/NutchServer.java
+END
+APIInfoResource.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/api/APIInfoResource.java
+END
+ConfResource.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/api/ConfResource.java
+END
+DbResource.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/api/DbResource.java
+END
+JobStatus.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/api/JobStatus.java
+END

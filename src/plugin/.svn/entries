@@ -1,0 +1,238 @@
+10
+
+dir
+1138326
+http://svn.apache.org/repos/asf/nutch/trunk/src/plugin
+http://svn.apache.org/repos/asf
+
+
+
+2011-05-23T10:34:32.403721Z
+1126421
+jnioche
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+13f79535-47bb-0310-9956-ffa450edef68
+
+index-anchor
+dir
+
+microformats-reltag
+dir
+
+tld
+dir
+
+parse-js
+dir
+
+urlnormalizer-basic
+dir
+
+lib-nekohtml
+dir
+
+index-basic
+dir
+
+languageidentifier
+dir
+
+build-plugin.xml
+file
+
+
+
+
+2011-06-22T07:44:17.591926Z
+7ef2754bc262abcd77a5253b473ba402
+2010-07-16T14:32:38.732060Z
+964809
+jnioche
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+9559
+
+urlfilter-validator
+dir
+
+scoring-opic
+dir
+
+build.xml
+file
+
+
+
+
+2011-06-22T07:44:17.591926Z
+5b085b3185ce8e8467e7dd0639076dd7
+2011-05-04T20:16:06.247063Z
+1099585
+jnioche
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+6123
+
+scoring-link
+dir
+
+urlfilter-prefix
+dir
+
+lib-xml
+dir
+
+parse-swf
+dir
+
+parse-zip
+dir
+
+urlfilter-suffix
+dir
+
+protocol-sftp
+dir
+
+urlfilter-automaton
+dir
+
+urlnormalizer-regex
+dir
+
+protocol-file
+dir
+
+urlfilter-regex
+dir
+
+lib-http
+dir
+
+protocol-ftp
+dir
+
+nutch-extensionpoints
+dir
+
+creativecommons
+dir
+
+parse-tika
+dir
+
+lib-regex-filter
+dir
+
+feed
+dir
+
+subcollection
+dir
+
+index-more
+dir
+
+parse-ext
+dir
+
+plugin.dtd
+file
+
+
+
+
+2011-06-22T07:44:17.595926Z
+d5b029ebb311881ff1efdae267eb5c8d
+2006-11-12T11:37:02.988733Z
+473936
+siren
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+6992
+
+urlnormalizer-pass
+dir
+
+parse-html
+dir
+
+urlfilter-domain
+dir
+
+protocol-httpclient
+dir
+
+protocol-http
+dir
+

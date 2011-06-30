@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/repos/asf/!svn/ver/1003608/nutch/trunk/src/plugin/languageidentifier/src/test/org/apache/nutch/analysis/lang
+END
+en.test
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/languageidentifier/src/test/org/apache/nutch/analysis/lang/en.test
+END
+pt.test
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/languageidentifier/src/test/org/apache/nutch/analysis/lang/pt.test
+END
+da.test
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/languageidentifier/src/test/org/apache/nutch/analysis/lang/da.test
+END
+TestHTMLLanguageParser.java
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/repos/asf/!svn/ver/1003608/nutch/trunk/src/plugin/languageidentifier/src/test/org/apache/nutch/analysis/lang/TestHTMLLanguageParser.java
+END
+es.test
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/languageidentifier/src/test/org/apache/nutch/analysis/lang/es.test
+END
+fr.test
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/languageidentifier/src/test/org/apache/nutch/analysis/lang/fr.test
+END
+de.test
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/languageidentifier/src/test/org/apache/nutch/analysis/lang/de.test
+END
+sv.test
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/languageidentifier/src/test/org/apache/nutch/analysis/lang/sv.test
+END
+nl.test
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/languageidentifier/src/test/org/apache/nutch/analysis/lang/nl.test
+END
+it.test
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/languageidentifier/src/test/org/apache/nutch/analysis/lang/it.test
+END
+test-referencial.txt
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/languageidentifier/src/test/org/apache/nutch/analysis/lang/test-referencial.txt
+END
+fi.test
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/languageidentifier/src/test/org/apache/nutch/analysis/lang/fi.test
+END
+el.test
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/languageidentifier/src/test/org/apache/nutch/analysis/lang/el.test
+END

@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/repos/asf/!svn/ver/1101279/nutch/trunk/src/java/org/apache/nutch/indexer
+END
+NutchDocument.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/indexer/NutchDocument.java
+END
+IndexingException.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/indexer/IndexingException.java
+END
+NutchIndexWriter.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/indexer/NutchIndexWriter.java
+END
+IndexerOutputFormat.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/indexer/IndexerOutputFormat.java
+END
+IndexerReducer.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/indexer/IndexerReducer.java
+END
+IndexerJob.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/indexer/IndexerJob.java
+END
+IndexingFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/indexer/IndexingFilter.java
+END
+IndexingFilters.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/983885/nutch/trunk/src/java/org/apache/nutch/indexer/IndexingFilters.java
+END
+NutchIndexWriterFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/indexer/NutchIndexWriterFactory.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/indexer/package.html
+END

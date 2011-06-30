@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/creativecommons/conf
+END
+nutch-site.xml
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/creativecommons/conf/nutch-site.xml
+END
+crawl-urlfilter.txt
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/creativecommons/conf/crawl-urlfilter.txt
+END

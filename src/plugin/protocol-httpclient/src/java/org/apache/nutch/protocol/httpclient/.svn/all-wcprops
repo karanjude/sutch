@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/repos/asf/!svn/ver/1056362/nutch/trunk/src/plugin/protocol-httpclient/src/java/org/apache/nutch/protocol/httpclient
+END
+Http.java
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/repos/asf/!svn/ver/984337/nutch/trunk/src/plugin/protocol-httpclient/src/java/org/apache/nutch/protocol/httpclient/Http.java
+END
+HttpAuthentication.java
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/protocol-httpclient/src/java/org/apache/nutch/protocol/httpclient/HttpAuthentication.java
+END
+DummySSLProtocolSocketFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/repos/asf/!svn/ver/983885/nutch/trunk/src/plugin/protocol-httpclient/src/java/org/apache/nutch/protocol/httpclient/DummySSLProtocolSocketFactory.java
+END
+HttpBasicAuthentication.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/repos/asf/!svn/ver/983885/nutch/trunk/src/plugin/protocol-httpclient/src/java/org/apache/nutch/protocol/httpclient/HttpBasicAuthentication.java
+END
+HttpAuthenticationFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/repos/asf/!svn/ver/983885/nutch/trunk/src/plugin/protocol-httpclient/src/java/org/apache/nutch/protocol/httpclient/HttpAuthenticationFactory.java
+END
+DummyX509TrustManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/repos/asf/!svn/ver/983885/nutch/trunk/src/plugin/protocol-httpclient/src/java/org/apache/nutch/protocol/httpclient/DummyX509TrustManager.java
+END
+HttpAuthenticationException.java
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/protocol-httpclient/src/java/org/apache/nutch/protocol/httpclient/HttpAuthenticationException.java
+END
+HttpResponse.java
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/repos/asf/!svn/ver/1056362/nutch/trunk/src/plugin/protocol-httpclient/src/java/org/apache/nutch/protocol/httpclient/HttpResponse.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/protocol-httpclient/src/java/org/apache/nutch/protocol/httpclient/package.html
+END

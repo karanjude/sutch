@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/storage
+END
+ProtocolStatus.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/storage/ProtocolStatus.java
+END
+StorageUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/storage/StorageUtils.java
+END
+WebTableCreator.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/storage/WebTableCreator.java
+END
+Mark.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/storage/Mark.java
+END
+WebPage.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/storage/WebPage.java
+END
+ParseStatus.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/storage/ParseStatus.java
+END

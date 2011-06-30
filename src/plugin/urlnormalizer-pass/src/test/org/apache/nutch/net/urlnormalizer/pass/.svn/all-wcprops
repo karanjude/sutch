@@ -1,0 +1,11 @@
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/urlnormalizer-pass/src/test/org/apache/nutch/net/urlnormalizer/pass
+END
+TestPassURLNormalizer.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/urlnormalizer-pass/src/test/org/apache/nutch/net/urlnormalizer/pass/TestPassURLNormalizer.java
+END

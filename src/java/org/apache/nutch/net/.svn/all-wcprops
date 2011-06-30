@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/repos/asf/!svn/ver/983885/nutch/trunk/src/java/org/apache/nutch/net
+END
+URLNormalizer.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/net/URLNormalizer.java
+END
+URLFilterException.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/net/URLFilterException.java
+END
+URLFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/net/URLFilter.java
+END
+URLNormalizers.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/983885/nutch/trunk/src/java/org/apache/nutch/net/URLNormalizers.java
+END
+URLNormalizerChecker.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/net/URLNormalizerChecker.java
+END
+URLFilters.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/net/URLFilters.java
+END
+URLFilterChecker.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/983321/nutch/trunk/src/java/org/apache/nutch/net/URLFilterChecker.java
+END

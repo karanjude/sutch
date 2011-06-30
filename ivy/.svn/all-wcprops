@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/repos/asf/!svn/ver/1131472/nutch/trunk/ivy
+END
+ivy-2.2.0.jar
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/repos/asf/!svn/ver/1131472/nutch/trunk/ivy/ivy-2.2.0.jar
+END
+ivy.xml
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/repos/asf/!svn/ver/1131472/nutch/trunk/ivy/ivy.xml
+END
+ivysettings.xml
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/repos/asf/!svn/ver/1028235/nutch/trunk/ivy/ivysettings.xml
+END
+mvn.template
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/repos/asf/!svn/ver/1131472/nutch/trunk/ivy/mvn.template
+END
+ivy-configurations.xml
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/repos/asf/!svn/ver/983321/nutch/trunk/ivy/ivy-configurations.xml
+END

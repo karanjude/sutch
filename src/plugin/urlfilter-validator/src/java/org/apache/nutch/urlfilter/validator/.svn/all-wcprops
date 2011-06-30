@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/urlfilter-validator/src/java/org/apache/nutch/urlfilter/validator
+END
+UrlValidator.java
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/urlfilter-validator/src/java/org/apache/nutch/urlfilter/validator/UrlValidator.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/urlfilter-validator/src/java/org/apache/nutch/urlfilter/validator/package.html
+END

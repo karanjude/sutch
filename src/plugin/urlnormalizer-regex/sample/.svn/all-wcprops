@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/urlnormalizer-regex/sample
+END
+regex-normalize-scope1.xml
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/urlnormalizer-regex/sample/regex-normalize-scope1.xml
+END
+regex-normalize-default.test
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/urlnormalizer-regex/sample/regex-normalize-default.test
+END
+regex-normalize-default.xml
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/urlnormalizer-regex/sample/regex-normalize-default.xml
+END
+regex-normalize-scope1.test
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/urlnormalizer-regex/sample/regex-normalize-scope1.test
+END

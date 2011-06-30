@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/1027471/nutch/trunk/src/test/org/apache/nutch/crawl
+END
+DummyWritable.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/983321/nutch/trunk/src/test/org/apache/nutch/crawl/DummyWritable.java
+END
+TestGenerator.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/asf/!svn/ver/1025963/nutch/trunk/src/test/org/apache/nutch/crawl/TestGenerator.java
+END
+TestSignatureFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/983321/nutch/trunk/src/test/org/apache/nutch/crawl/TestSignatureFactory.java
+END
+TestInjector.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/1027471/nutch/trunk/src/test/org/apache/nutch/crawl/TestInjector.java
+END

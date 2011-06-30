@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/984352/nutch/trunk/src/plugin/creativecommons/src/java/org/creativecommons/nutch
+END
+CCIndexingFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/repos/asf/!svn/ver/983885/nutch/trunk/src/plugin/creativecommons/src/java/org/creativecommons/nutch/CCIndexingFilter.java
+END
+CCParseFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/repos/asf/!svn/ver/984352/nutch/trunk/src/plugin/creativecommons/src/java/org/creativecommons/nutch/CCParseFilter.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/creativecommons/src/java/org/creativecommons/nutch/package.html
+END

@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/repos/asf/!svn/ver/983885/nutch/trunk/src/plugin/index-anchor/src/java/org/apache/nutch/indexer/anchor
+END
+AnchorIndexingFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/repos/asf/!svn/ver/983885/nutch/trunk/src/plugin/index-anchor/src/java/org/apache/nutch/indexer/anchor/AnchorIndexingFilter.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/index-anchor/src/java/org/apache/nutch/indexer/anchor/package.html
+END

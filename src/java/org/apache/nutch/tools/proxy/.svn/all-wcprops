@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/tools/proxy
+END
+FakeHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/tools/proxy/FakeHandler.java
+END
+LogDebugHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/tools/proxy/LogDebugHandler.java
+END
+NotFoundHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/tools/proxy/NotFoundHandler.java
+END
+AbstractTestbedHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/tools/proxy/AbstractTestbedHandler.java
+END
+DelayHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/tools/proxy/DelayHandler.java
+END
+TestbedProxy.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/java/org/apache/nutch/tools/proxy/TestbedProxy.java
+END

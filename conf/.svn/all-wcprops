@@ -1,0 +1,143 @@
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/repos/asf/!svn/ver/1126425/nutch/trunk/conf
+END
+regex-normalize.xml.template
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/asf/!svn/ver/983321/nutch/trunk/conf/regex-normalize.xml.template
+END
+gora.properties
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/repos/asf/!svn/ver/983321/nutch/trunk/conf/gora.properties
+END
+httpclient-auth.xml.template
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/asf/!svn/ver/983321/nutch/trunk/conf/httpclient-auth.xml.template
+END
+parse-plugins.xml
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/repos/asf/!svn/ver/1099585/nutch/trunk/conf/parse-plugins.xml
+END
+prefix-urlfilter.txt.template
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/repos/asf/!svn/ver/983321/nutch/trunk/conf/prefix-urlfilter.txt.template
+END
+domain-urlfilter.txt
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/repos/asf/!svn/ver/983321/nutch/trunk/conf/domain-urlfilter.txt
+END
+nutch-site.xml.template
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/repos/asf/!svn/ver/983321/nutch/trunk/conf/nutch-site.xml.template
+END
+hbase-site.xml.template
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/repos/asf/!svn/ver/983321/nutch/trunk/conf/hbase-site.xml.template
+END
+domain-suffixes.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/repos/asf/!svn/ver/983321/nutch/trunk/conf/domain-suffixes.xsd
+END
+schema.xml
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/repos/asf/!svn/ver/1126425/nutch/trunk/conf/schema.xml
+END
+solrindex-mapping.xml
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/repos/asf/!svn/ver/1091895/nutch/trunk/conf/solrindex-mapping.xml
+END
+domain-suffixes.xml
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/repos/asf/!svn/ver/983321/nutch/trunk/conf/domain-suffixes.xml
+END
+subcollections.xml.template
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/983321/nutch/trunk/conf/subcollections.xml.template
+END
+tika-mimetypes.xml
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/repos/asf/!svn/ver/1090181/nutch/trunk/conf/tika-mimetypes.xml
+END
+nutch-default.xml
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/repos/asf/!svn/ver/1092085/nutch/trunk/conf/nutch-default.xml
+END
+suffix-urlfilter.txt.template
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/repos/asf/!svn/ver/983321/nutch/trunk/conf/suffix-urlfilter.txt.template
+END
+parse-plugins.dtd
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/repos/asf/!svn/ver/983321/nutch/trunk/conf/parse-plugins.dtd
+END
+automaton-urlfilter.txt.template
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/repos/asf/!svn/ver/983321/nutch/trunk/conf/automaton-urlfilter.txt.template
+END
+regex-urlfilter.txt.template
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/asf/!svn/ver/983321/nutch/trunk/conf/regex-urlfilter.txt.template
+END
+nutch-conf.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/repos/asf/!svn/ver/983321/nutch/trunk/conf/nutch-conf.xsl
+END
+log4j.properties
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/repos/asf/!svn/ver/983321/nutch/trunk/conf/log4j.properties
+END
+configuration.xsl
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/repos/asf/!svn/ver/983321/nutch/trunk/conf/configuration.xsl
+END
+gora-sql-mapping.xml
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/repos/asf/!svn/ver/983321/nutch/trunk/conf/gora-sql-mapping.xml
+END

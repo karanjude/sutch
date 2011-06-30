@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/repos/asf/!svn/ver/1099585/nutch/trunk/src/plugin/parse-tika/sample
+END
+word97.doc
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/parse-tika/sample/word97.doc
+END
+pdftest.pdf
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/parse-tika/sample/pdftest.pdf
+END
+ootest.odt
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/parse-tika/sample/ootest.odt
+END
+nutch.html
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/parse-tika/sample/nutch.html
+END
+encrypted.pdf
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/parse-tika/sample/encrypted.pdf
+END
+test.rtf
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/parse-tika/sample/test.rtf
+END
+ootest.txt
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/parse-tika/sample/ootest.txt
+END
+ootest.sxw
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/parse-tika/sample/ootest.sxw
+END
+rsstest.rss
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/repos/asf/!svn/ver/1099585/nutch/trunk/src/plugin/parse-tika/sample/rsstest.rss
+END

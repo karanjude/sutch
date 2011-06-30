@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/repos/asf/!svn/ver/984352/nutch/trunk/src/plugin/microformats-reltag/src/java/org/apache/nutch/microformats/reltag
+END
+RelTagIndexingFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/microformats-reltag/src/java/org/apache/nutch/microformats/reltag/RelTagIndexingFilter.java
+END
+RelTagParser.java
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/repos/asf/!svn/ver/984352/nutch/trunk/src/plugin/microformats-reltag/src/java/org/apache/nutch/microformats/reltag/RelTagParser.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/microformats-reltag/src/java/org/apache/nutch/microformats/reltag/package.html
+END

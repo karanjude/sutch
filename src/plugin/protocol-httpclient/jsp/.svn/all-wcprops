@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/protocol-httpclient/jsp
+END
+ntlm.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/protocol-httpclient/jsp/ntlm.jsp
+END
+cookies.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/protocol-httpclient/jsp/cookies.jsp
+END
+noauth.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/protocol-httpclient/jsp/noauth.jsp
+END
+digest.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/protocol-httpclient/jsp/digest.jsp
+END
+basic.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/repos/asf/!svn/ver/983321/nutch/trunk/src/plugin/protocol-httpclient/jsp/basic.jsp
+END

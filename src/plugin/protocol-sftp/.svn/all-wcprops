@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/repos/asf/!svn/ver/1079960/nutch/trunk/src/plugin/protocol-sftp
+END
+ivy.xml
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/asf/!svn/ver/1079960/nutch/trunk/src/plugin/protocol-sftp/ivy.xml
+END
+plugin.xml
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/repos/asf/!svn/ver/1026729/nutch/trunk/src/plugin/protocol-sftp/plugin.xml
+END
+build.xml
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/repos/asf/!svn/ver/1026729/nutch/trunk/src/plugin/protocol-sftp/build.xml
+END

@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/test/org/apache/nutch/util
+END
+TestSuffixStringMatcher.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/983321/nutch/trunk/src/test/org/apache/nutch/util/TestSuffixStringMatcher.java
+END
+TestEncodingDetector.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/asf/!svn/ver/983321/nutch/trunk/src/test/org/apache/nutch/util/TestEncodingDetector.java
+END
+TestURLUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/repos/asf/!svn/ver/983321/nutch/trunk/src/test/org/apache/nutch/util/TestURLUtil.java
+END
+TestStringUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/983321/nutch/trunk/src/test/org/apache/nutch/util/TestStringUtil.java
+END
+AbstractNutchTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/repos/asf/!svn/ver/1027471/nutch/trunk/src/test/org/apache/nutch/util/AbstractNutchTest.java
+END
+TestTableUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/1092082/nutch/trunk/src/test/org/apache/nutch/util/TestTableUtil.java
+END
+CrawlTestUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/1027471/nutch/trunk/src/test/org/apache/nutch/util/CrawlTestUtil.java
+END
+TestPrefixStringMatcher.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/asf/!svn/ver/983321/nutch/trunk/src/test/org/apache/nutch/util/TestPrefixStringMatcher.java
+END
+TestGZIPUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/asf/!svn/ver/983321/nutch/trunk/src/test/org/apache/nutch/util/TestGZIPUtils.java
+END
+WritableTestUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/983321/nutch/trunk/src/test/org/apache/nutch/util/WritableTestUtils.java
+END
+TestNodeWalker.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/asf/!svn/ver/983321/nutch/trunk/src/test/org/apache/nutch/util/TestNodeWalker.java
+END

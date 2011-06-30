@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/asf/!svn/ver/1099903/nutch/trunk/src/test/org/apache/nutch/parse
+END
+TestOutlinkExtractor.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repos/asf/!svn/ver/983321/nutch/trunk/src/test/org/apache/nutch/parse/TestOutlinkExtractor.java
+END
+parse-plugin-test.xml
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/asf/!svn/ver/983321/nutch/trunk/src/test/org/apache/nutch/parse/parse-plugin-test.xml
+END
+TestParserFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/asf/!svn/ver/1099903/nutch/trunk/src/test/org/apache/nutch/parse/TestParserFactory.java
+END
