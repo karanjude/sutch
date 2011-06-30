@@ -23,6 +23,15 @@
 
    <!-- this file hosts all extension points nutch core code offers. 
    Please note that plugins can define extension points as well to be extendable.-->
+
+
+<extension-point
+      id="org.apache.nutch.crawl.CrawlingStrategy"
+      name="Nutch Crawling Strategy"/>
+
+<extension-point
+      id="org.apache.nutch.scoring.ScoringFilter"
+      name="Nutch Scoring"/>
      
 <extension-point
       id="org.apache.nutch.indexer.IndexingFilter"
