@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin
+   id="default-crawler"
+   name="Default Crawler for web sites"
+   version="0.0.1"
+   provider-name="karanjude.org">
+
+   <runtime>
+      <!-- As defined in build.xml this plugin will end up bundled as recommended.jar -->
+      <library name="default-crawler.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+
+   <!-- The RecommendedParser extends the HtmlParseFilter to grab the contents of
+        any recommended meta tags -->
+   <extension id="org.apache.nutch.crawl.strategy"
+              name="Default Crawler"
+              point="org.apache.nutch.crawl.CrawlingStrategy">
+      <implementation id="RecommendedParser"
+                      class="org.apache.nutch.crawl.strategy.DefaultCrawler"/>
+   </extension>
+
+</plugin>

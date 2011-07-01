@@ -18,6 +18,7 @@ package org.apache.nutch.crawl;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -231,33 +232,43 @@ public class InjectorJob extends NutchTool implements Tool {
     } else {
       input = new Path(path.toString());
     }
-    numJobs = 2;
-    currentJobNum = 0;
-    status.put(Nutch.STAT_PHASE, "convert input");
-    currentJob = new NutchJob(getConf(), "inject-p1 " + input);
-    FileInputFormat.addInputPath(currentJob, input);
-    currentJob.setMapperClass(UrlMapper.class);
-    currentJob.setMapOutputKeyClass(String.class);
-    currentJob.setMapOutputValueClass(WebPage.class);
-    currentJob.setOutputFormatClass(GoraOutputFormat.class);
-    DataStore<String, WebPage> store = StorageUtils.createWebStore(currentJob.getConfiguration(),
-        String.class, WebPage.class);
-    GoraOutputFormat.setOutput(currentJob, store, true);
-    currentJob.setReducerClass(Reducer.class);
-    currentJob.setNumReduceTasks(0);
-    currentJob.waitForCompletion(true);
-    ToolUtil.recordJobStatus(null, currentJob, results);
-    currentJob = null;
+    
+    HashMap<String, CrawlingStrategy> crawlerPlugins = (HashMap<String, CrawlingStrategy>) args.get(Crawler.CRAWLERS);
+    for (CrawlingStrategy crawlingPlugin : crawlerPlugins.values()) {
+    	numJobs = 2;
+    	currentJobNum = 0;
+    	status.put(Nutch.STAT_PHASE, "convert input");
+    	currentJob = new NutchJob(getConf(), crawlingPlugin.getName() + input);
+    	crawlingPlugin.setUpInputFormat(currentJob, input);
+    	crawlingPlugin.runInjectorJob();
+        currentJob.setMapperClass(crawlingPlugin.getMapperClass());
+        currentJob.setMapOutputKeyClass(crawlingPlugin.getOutputKeyClass());
+        currentJob.setMapOutputValueClass(crawlingPlugin.getOutputValueClass());
+        currentJob.setOutputFormatClass(crawlingPlugin.getOutputFormatClass());
+        DataStore<String, WebPage> store = StorageUtils.createWebStore(currentJob.getConfiguration(),
+        		String.class, WebPage.class);
+        GoraOutputFormat.setOutput(currentJob, store, true);
+        currentJob.setReducerClass(Reducer.class);
+        currentJob.setNumReduceTasks(0);
+        currentJob.waitForCompletion(true);
+        
+        
+        ToolUtil.recordJobStatus(null, currentJob, results);
+        currentJob = null;
+        
+        status.put(Nutch.STAT_PHASE, "merge input with db");
+        status.put(Nutch.STAT_PROGRESS, 0.5f);
 
-    status.put(Nutch.STAT_PHASE, "merge input with db");
-    status.put(Nutch.STAT_PROGRESS, 0.5f);
-    currentJobNum = 1;
-    currentJob = new NutchJob(getConf(), "inject-p2 " + input);
-    StorageUtils.initMapperJob(currentJob, FIELDS, String.class,
-        WebPage.class, InjectorMapper.class);
-    currentJob.setNumReduceTasks(0);
-    ToolUtil.recordJobStatus(null, currentJob, results);
-    status.put(Nutch.STAT_PROGRESS, 1.0f);
+        currentJobNum = 1;
+        currentJob = new NutchJob(getConf(), "inject-p2 " + input);
+        StorageUtils.initMapperJob(currentJob, FIELDS, String.class,
+            WebPage.class, InjectorMapper.class);
+        currentJob.setNumReduceTasks(0);
+        ToolUtil.recordJobStatus(null, currentJob, results);
+        status.put(Nutch.STAT_PROGRESS, 1.0f);
+
+    }
+    
     return results;
   }
 

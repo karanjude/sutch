@@ -17,7 +17,6 @@
 -->
 <!-- Imported by plugin build.xml files to define default targets. -->
 <project xmlns:ivy="antlib:org.apache.ivy.ant">
-
   <property name="name" value="${ant.project.name}"/>
   <property name="root" value="${basedir}"/>
 

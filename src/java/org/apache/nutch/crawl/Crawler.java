@@ -43,8 +43,10 @@ import org.apache.nutch.parse.ParserJob;
 import org.apache.nutch.plugin.Extension;
 import org.apache.nutch.plugin.ExtensionPoint;
 import org.apache.nutch.plugin.PluginRepository;
+import org.apache.nutch.plugin.PluginRuntimeException;
 import org.apache.nutch.util.NutchConfiguration;
 import org.apache.nutch.util.NutchTool;
+import org.apache.nutch.util.ObjectCache;
 import org.apache.nutch.util.ToolUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,28 +93,13 @@ public class Crawler extends NutchTool implements Tool {
 	}
 
 	static String CRAWLER_EXTENSION_POINT = CrawlingStrategy.class.getName();
+	static String CRAWLERS = "crawlers";
 
 	@Override
 	public Map<String, Object> run(Map<String, Object> args) throws Exception {
-		ExtensionPoint point = PluginRepository.get(getConf())
-				.getExtensionPoint(CRAWLER_EXTENSION_POINT);
-		if (point == null)
-			throw new RuntimeException(CRAWLER_EXTENSION_POINT + " not found.");
-
-		Extension[] extensions = point.getExtensions();
-		HashMap<String, CrawlingStrategy> crawlingStrategies = new HashMap<String, CrawlingStrategy>();
-		for (int i = 0; i < extensions.length; i++) {
-			Extension extension = extensions[i];
-			CrawlingStrategy crawlingStrategy = (CrawlingStrategy) extension
-					.getExtensionInstance();
-			LOG.info("Adding Crawling strategy" + crawlingStrategy.getClass().getName());
-			if (!crawlingStrategies.containsKey(crawlingStrategy.getClass()
-					.getName())) {
-				crawlingStrategies.put(crawlingStrategy.getClass().getName(),
-						crawlingStrategy);
-			}
-		}
-
+		HashMap<String, CrawlingStrategy> crawlerPlugins = crawlingPlugins();
+		args.put(CRAWLERS, crawlerPlugins);
+		
 		results.clear();
 		status.clear();
 
@@ -121,6 +108,153 @@ public class Crawler extends NutchTool implements Tool {
 			getConf().set(Nutch.CRAWL_ID_KEY, crawlId);
 		}
 
+		String seedDir = getSeedDir(args);
+		Integer depth = getDepth(args);
+		Boolean parse = getParse(args);
+		String solrUrl = (String) args.get(Nutch.ARG_SOLR);
+		float totalPhases = totalPhases(seedDir, depth, parse);
+		
+		float phase = 0;
+		
+		Map<String, Object> jobRes = null;
+		LinkedHashMap<String, Object> subTools = new LinkedHashMap<String, Object>();
+		status.put(Nutch.STAT_JOBS, subTools);
+		results.put(Nutch.STAT_JOBS, subTools);
+		// inject phase
+		if (seedDir != null) {
+			phase = runInjectorJob(args, totalPhases, phase, subTools);
+		}
+		if (shouldStop) {
+			return results;
+		}
+		// run "depth" cycles
+		for (int i = 0; i < depth; i++) {
+			runGenerator(args, subTools, i);
+			status.put(Nutch.STAT_PROGRESS, ++phase / totalPhases);
+			if (shouldStop) {
+				return results;
+			}
+			status.put(Nutch.STAT_PHASE, "fetch " + i);
+			runFetcher(args, subTools, i);
+			status.put(Nutch.STAT_PROGRESS, ++phase / totalPhases);
+			if (shouldStop) {
+				return results;
+			}
+			if (!parse) {
+				phase = runParserJob(args, totalPhases, phase, subTools, i);
+				if (shouldStop) {
+					return results;
+				}
+			}
+			phase = runDbUpdateJob(args, totalPhases, phase, subTools, i);
+			if (shouldStop) {
+				return results;
+			}
+		}
+		if (solrUrl != null) {
+			runSolrJob(args, subTools);
+		}
+		return results;
+	}
+
+	private void runSolrJob(Map<String, Object> args,
+			LinkedHashMap<String, Object> subTools) throws Exception {
+		Map<String, Object> jobRes;
+		status.put(Nutch.STAT_PHASE, "index");
+		jobRes = runTool(SolrIndexerJob.class, args);
+		if (jobRes != null) {
+			subTools.put("index", jobRes);
+		}
+	}
+
+	private float runDbUpdateJob(Map<String, Object> args, float totalPhases,
+			float phase, LinkedHashMap<String, Object> subTools, int i)
+			throws Exception {
+		Map<String, Object> jobRes;
+		status.put(Nutch.STAT_PHASE, "updatedb " + i);
+		jobRes = runTool(DbUpdaterJob.class, args);
+		if (jobRes != null) {
+			subTools.put("updatedb " + i, jobRes);
+		}
+		status.put(Nutch.STAT_PROGRESS, ++phase / totalPhases);
+		return phase;
+	}
+
+	private float runParserJob(Map<String, Object> args, float totalPhases,
+			float phase, LinkedHashMap<String, Object> subTools, int i)
+			throws Exception {
+		Map<String, Object> jobRes;
+		status.put(Nutch.STAT_PHASE, "parse " + i);
+		jobRes = runTool(ParserJob.class, args);
+		if (jobRes != null) {
+			subTools.put("parse " + i, jobRes);
+		}
+		status.put(Nutch.STAT_PROGRESS, ++phase / totalPhases);
+		return phase;
+	}
+
+	private void runFetcher(Map<String, Object> args,
+			LinkedHashMap<String, Object> subTools, int i) throws Exception {
+		Map<String, Object> jobRes;
+		jobRes = runTool(FetcherJob.class, args);
+		if (jobRes != null) {
+			subTools.put("fetch " + i, jobRes);
+		}
+	}
+
+	private void runGenerator(Map<String, Object> args,
+			LinkedHashMap<String, Object> subTools, int i) throws Exception {
+		Map<String, Object> jobRes;
+		status.put(Nutch.STAT_PHASE, "generate " + i);
+		jobRes = runTool(GeneratorJob.class, args);
+		if (jobRes != null) {
+			subTools.put("generate " + i, jobRes);
+		}
+	}
+
+	private float runInjectorJob(Map<String, Object> args, float totalPhases,
+			float phase, LinkedHashMap<String, Object> subTools)
+			throws Exception, IOException {
+		Map<String, Object> jobRes;
+		status.put(Nutch.STAT_PHASE, "inject");
+		jobRes = runTool(InjectorJob.class, args);
+		if (jobRes != null) {
+			subTools.put("inject", jobRes);
+		}
+		status.put(Nutch.STAT_PROGRESS, ++phase / totalPhases);
+		if (cleanSeedDir && tmpSeedDir != null) {
+			LOG.info(" - cleaning tmp seed list in " + tmpSeedDir);
+			FileSystem.get(getConf()).delete(new Path(tmpSeedDir), true);
+		}
+		return phase;
+	}
+
+	private float totalPhases(String seedDir, Integer depth, Boolean parse) {
+		int onePhase = 3;
+		if (!parse)
+			onePhase++;
+		float totalPhases = depth * onePhase;
+		if (seedDir != null)
+			totalPhases++;
+		return totalPhases;
+	}
+
+	private Boolean getParse(Map<String, Object> args) {
+		Boolean parse = (Boolean) args.get(Nutch.ARG_PARSE);
+		if (parse == null) {
+			parse = getConf().getBoolean(FetcherJob.PARSE_KEY, false);
+		}
+		return parse;
+	}
+
+	private Integer getDepth(Map<String, Object> args) {
+		Integer depth = (Integer) args.get(Nutch.ARG_DEPTH);
+		if (depth == null)
+			depth = 1;
+		return depth;
+	}
+
+	private String getSeedDir(Map<String, Object> args) throws IOException {
 		String seedDir = null;
 		String seedList = (String) args.get(Nutch.ARG_SEEDLIST);
 		if (seedList != null) { // takes precedence
@@ -144,90 +278,31 @@ public class Crawler extends NutchTool implements Tool {
 		} else {
 			seedDir = (String) args.get(Nutch.ARG_SEEDDIR);
 		}
-		Integer depth = (Integer) args.get(Nutch.ARG_DEPTH);
-		if (depth == null)
-			depth = 1;
-		Boolean parse = (Boolean) args.get(Nutch.ARG_PARSE);
-		if (parse == null) {
-			parse = getConf().getBoolean(FetcherJob.PARSE_KEY, false);
-		}
-		String solrUrl = (String) args.get(Nutch.ARG_SOLR);
-		int onePhase = 3;
-		if (!parse)
-			onePhase++;
-		float totalPhases = depth * onePhase;
-		if (seedDir != null)
-			totalPhases++;
-		float phase = 0;
-		Map<String, Object> jobRes = null;
-		LinkedHashMap<String, Object> subTools = new LinkedHashMap<String, Object>();
-		status.put(Nutch.STAT_JOBS, subTools);
-		results.put(Nutch.STAT_JOBS, subTools);
-		// inject phase
-		if (seedDir != null) {
-			status.put(Nutch.STAT_PHASE, "inject");
-			jobRes = runTool(InjectorJob.class, args);
-			if (jobRes != null) {
-				subTools.put("inject", jobRes);
-			}
-			status.put(Nutch.STAT_PROGRESS, ++phase / totalPhases);
-			if (cleanSeedDir && tmpSeedDir != null) {
-				LOG.info(" - cleaning tmp seed list in " + tmpSeedDir);
-				FileSystem.get(getConf()).delete(new Path(tmpSeedDir), true);
+		return seedDir;
+	}
+
+	private HashMap<String, CrawlingStrategy> crawlingPlugins()
+			throws PluginRuntimeException {
+		ExtensionPoint point = PluginRepository.get(getConf())
+				.getExtensionPoint(CRAWLER_EXTENSION_POINT);
+		if (point == null)
+			throw new RuntimeException(CRAWLER_EXTENSION_POINT + " not found.");
+
+		Extension[] extensions = point.getExtensions();
+		HashMap<String, CrawlingStrategy> crawlingStrategies = new HashMap<String, CrawlingStrategy>();
+		for (int i = 0; i < extensions.length; i++) {
+			Extension extension = extensions[i];
+			CrawlingStrategy crawlingStrategy = (CrawlingStrategy) extension
+					.getExtensionInstance();
+			LOG.info("Adding Crawling strategy"
+					+ crawlingStrategy.getClass().getName());
+			if (!crawlingStrategies.containsKey(crawlingStrategy.getClass()
+					.getName())) {
+				crawlingStrategies.put(crawlingStrategy.getClass().getName(),
+						crawlingStrategy);
 			}
 		}
-		if (shouldStop) {
-			return results;
-		}
-		// run "depth" cycles
-		for (int i = 0; i < depth; i++) {
-			status.put(Nutch.STAT_PHASE, "generate " + i);
-			jobRes = runTool(GeneratorJob.class, args);
-			if (jobRes != null) {
-				subTools.put("generate " + i, jobRes);
-			}
-			status.put(Nutch.STAT_PROGRESS, ++phase / totalPhases);
-			if (shouldStop) {
-				return results;
-			}
-			status.put(Nutch.STAT_PHASE, "fetch " + i);
-			jobRes = runTool(FetcherJob.class, args);
-			if (jobRes != null) {
-				subTools.put("fetch " + i, jobRes);
-			}
-			status.put(Nutch.STAT_PROGRESS, ++phase / totalPhases);
-			if (shouldStop) {
-				return results;
-			}
-			if (!parse) {
-				status.put(Nutch.STAT_PHASE, "parse " + i);
-				jobRes = runTool(ParserJob.class, args);
-				if (jobRes != null) {
-					subTools.put("parse " + i, jobRes);
-				}
-				status.put(Nutch.STAT_PROGRESS, ++phase / totalPhases);
-				if (shouldStop) {
-					return results;
-				}
-			}
-			status.put(Nutch.STAT_PHASE, "updatedb " + i);
-			jobRes = runTool(DbUpdaterJob.class, args);
-			if (jobRes != null) {
-				subTools.put("updatedb " + i, jobRes);
-			}
-			status.put(Nutch.STAT_PROGRESS, ++phase / totalPhases);
-			if (shouldStop) {
-				return results;
-			}
-		}
-		if (solrUrl != null) {
-			status.put(Nutch.STAT_PHASE, "index");
-			jobRes = runTool(SolrIndexerJob.class, args);
-			if (jobRes != null) {
-				subTools.put("index", jobRes);
-			}
-		}
-		return results;
+		return crawlingStrategies;
 	}
 
 	@Override
