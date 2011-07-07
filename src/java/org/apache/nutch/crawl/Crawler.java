@@ -98,8 +98,9 @@ public class Crawler extends NutchTool implements Tool {
 	@Override
 	public Map<String, Object> run(Map<String, Object> args) throws Exception {
 		HashMap<String, CrawlingStrategy> crawlerPlugins = crawlingPlugins();
+		System.err.println("Crawler plugin : " + crawlerPlugins);
 		args.put(CRAWLERS, crawlerPlugins);
-		
+
 		results.clear();
 		status.clear();
 
@@ -113,14 +114,16 @@ public class Crawler extends NutchTool implements Tool {
 		Boolean parse = getParse(args);
 		String solrUrl = (String) args.get(Nutch.ARG_SOLR);
 		float totalPhases = totalPhases(seedDir, depth, parse);
-		
+		System.err.println("seeeed dir " + seedDir);
+
 		float phase = 0;
-		
+
 		Map<String, Object> jobRes = null;
 		LinkedHashMap<String, Object> subTools = new LinkedHashMap<String, Object>();
 		status.put(Nutch.STAT_JOBS, subTools);
 		results.put(Nutch.STAT_JOBS, subTools);
 		// inject phase
+		System.err.println("about to start injector");
 		if (seedDir != null) {
 			phase = runInjectorJob(args, totalPhases, phase, subTools);
 		}
@@ -283,17 +286,22 @@ public class Crawler extends NutchTool implements Tool {
 
 	private HashMap<String, CrawlingStrategy> crawlingPlugins()
 			throws PluginRuntimeException {
+		System.err.println("looking for crawler extension point "
+				+ CRAWLER_EXTENSION_POINT);
 		ExtensionPoint point = PluginRepository.get(getConf())
 				.getExtensionPoint(CRAWLER_EXTENSION_POINT);
 		if (point == null)
 			throw new RuntimeException(CRAWLER_EXTENSION_POINT + " not found.");
 
 		Extension[] extensions = point.getExtensions();
+		System.err.println("crawler extendiosn " + extensions);
+		System.err.println("crawler extensions " + extensions.length);
 		HashMap<String, CrawlingStrategy> crawlingStrategies = new HashMap<String, CrawlingStrategy>();
 		for (int i = 0; i < extensions.length; i++) {
 			Extension extension = extensions[i];
 			CrawlingStrategy crawlingStrategy = (CrawlingStrategy) extension
 					.getExtensionInstance();
+			System.err.println("Adding Crawling strategy" + crawlingStrategy.getClass().getName() );
 			LOG.info("Adding Crawling strategy"
 					+ crawlingStrategy.getClass().getName());
 			if (!crawlingStrategies.containsKey(crawlingStrategy.getClass()

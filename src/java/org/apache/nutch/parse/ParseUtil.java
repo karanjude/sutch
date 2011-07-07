@@ -48,224 +48,234 @@ import org.apache.nutch.util.URLUtil;
  * A Utility class containing methods to simply perform parsing utilities such
  * as iterating through a preferred list of {@link Parser}s to obtain
  * {@link Parse} objects.
- *
+ * 
  * @author mattmann
  * @author J&eacute;r&ocirc;me Charron
  * @author S&eacute;bastien Le Callonnec
  */
 public class ParseUtil extends Configured {
 
-  /* our log stream */
-  public static final Logger LOG = LoggerFactory.getLogger(ParseUtil.class);
+	/* our log stream */
+	public static final Logger LOG = LoggerFactory.getLogger(ParseUtil.class);
 
-  private Configuration conf;
+	private Configuration conf;
 
-  private Signature sig;
-  private URLFilters filters;
-  private URLNormalizers normalizers;
-  private int maxOutlinks;
-  private boolean ignoreExternalLinks;
-  private ParserFactory parserFactory;
-  /** Parser timeout set to 30 sec by default. Set -1 to deactivate **/
-  private int MAX_PARSE_TIME = 30;
-  /**
-   *
-   * @param conf
-   */
-  public ParseUtil(Configuration conf) {
-    super(conf);
-    setConf(conf);
-  }
+	private Signature sig;
+	private URLFilters filters;
+	private URLNormalizers normalizers;
+	private int maxOutlinks;
+	private boolean ignoreExternalLinks;
+	private ParserFactory parserFactory;
+	/** Parser timeout set to 30 sec by default. Set -1 to deactivate **/
+	private int MAX_PARSE_TIME = 30;
 
-  @Override
-  public Configuration getConf() {
-    return conf;
-  }
+	/**
+	 * 
+	 * @param conf
+	 */
+	public ParseUtil(Configuration conf) {
+		super(conf);
+		setConf(conf);
+	}
 
-  @Override
-  public void setConf(Configuration conf) {
-    this.conf = conf;
-    parserFactory = new ParserFactory(conf);
-    MAX_PARSE_TIME=conf.getInt("parser.timeout", 30);
-    sig = SignatureFactory.getSignature(conf);
-    filters = new URLFilters(conf);
-    normalizers = new URLNormalizers(conf, URLNormalizers.SCOPE_OUTLINK);
-    int maxOutlinksPerPage = conf.getInt("db.max.outlinks.per.page", 100);
-    maxOutlinks = (maxOutlinksPerPage < 0) ? Integer.MAX_VALUE : maxOutlinksPerPage;
-    ignoreExternalLinks = conf.getBoolean("db.ignore.external.links", false);
-  }
+	@Override
+	public Configuration getConf() {
+		return conf;
+	}
 
-  /**
-   * Performs a parse by iterating through a List of preferred {@link Parser}s
-   * until a successful parse is performed and a {@link Parse} object is
-   * returned. If the parse is unsuccessful, a message is logged to the
-   * <code>WARNING</code> level, and an empty parse is returned.
-   *
-   * @throws ParseException If no suitable parser is found to perform the parse.
-   */
-  public Parse parse(String url, WebPage page) throws ParseException {
-    Parser[] parsers = null;
+	@Override
+	public void setConf(Configuration conf) {
+		this.conf = conf;
+		parserFactory = new ParserFactory(conf);
+		MAX_PARSE_TIME = conf.getInt("parser.timeout", 30);
+		sig = SignatureFactory.getSignature(conf);
+		filters = new URLFilters(conf);
+		normalizers = new URLNormalizers(conf, URLNormalizers.SCOPE_OUTLINK);
+		int maxOutlinksPerPage = conf.getInt("db.max.outlinks.per.page", 100);
+		maxOutlinks = (maxOutlinksPerPage < 0) ? Integer.MAX_VALUE
+				: maxOutlinksPerPage;
+		ignoreExternalLinks = conf
+				.getBoolean("db.ignore.external.links", false);
+	}
 
-    String contentType = TableUtil.toString(page.getContentType());
+	/**
+	 * Performs a parse by iterating through a List of preferred {@link Parser}s
+	 * until a successful parse is performed and a {@link Parse} object is
+	 * returned. If the parse is unsuccessful, a message is logged to the
+	 * <code>WARNING</code> level, and an empty parse is returned.
+	 * 
+	 * @throws ParseException
+	 *             If no suitable parser is found to perform the parse.
+	 */
+	public Parse parse(String url, WebPage page) throws ParseException {
+		Parser[] parsers = null;
 
-    try {
-      parsers = this.parserFactory.getParsers(contentType, url);
-    } catch (ParserNotFound e) {
-      LOG.warn("No suitable parser found when trying to parse content " + url +
-          " of type " + contentType);
-      throw new ParseException(e.getMessage());
-    }
+		String contentType = TableUtil.toString(page.getContentType());
 
-    for (int i=0; i<parsers.length; i++) {
-      if (LOG.isDebugEnabled()) {
-        LOG.debug("Parsing [" + url + "] with [" + parsers[i] + "]");
-      }
-      Parse parse = null;
-      
-      if (MAX_PARSE_TIME!=-1)
-    	  parse = runParser(parsers[i], url, page);
-      else 
-    	  parse = parsers[i].getParse(url, page);
-      
-      if (parse!=null && ParseStatusUtils.isSuccess(parse.getParseStatus())) {
-        return parse;
-      }
-    }
+		try {
+			parsers = this.parserFactory.getParsers(contentType, url);
+		} catch (ParserNotFound e) {
+			LOG.warn("No suitable parser found when trying to parse content "
+					+ url + " of type " + contentType);
+			throw new ParseException(e.getMessage());
+		}
 
-    LOG.warn("Unable to successfully parse content " + url +
-        " of type " + contentType);
-    return ParseStatusUtils.getEmptyParse(new ParseException("Unable to successfully parse content"), null);
-  }
-  
-  private Parse runParser(Parser p, String url, WebPage page) {
-	  ParseCallable pc = new ParseCallable(p, page, url);
-	  FutureTask<Parse> task = new FutureTask<Parse>(pc);
-	  Parse res = null;
-	  Thread t = new Thread(task);
-	  t.start();
-	  try {
-		  res = task.get(MAX_PARSE_TIME, TimeUnit.SECONDS);
-	  } catch (TimeoutException e) {
-		  LOG.warn("TIMEOUT parsing " + url + " with " + p);
-	  } catch (Exception e) {
-		  task.cancel(true);
-		  res = null;
-		  t.interrupt();
-	  } finally {
-		  t = null;
-		  pc = null;
-	  }
-	  return res;
-  }
+		for (int i = 0; i < parsers.length; i++) {
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("Parsing [" + url + "] with [" + parsers[i] + "]");
+			}
+			Parse parse = null;
 
-  /**
-   * Parses given web page and stores parsed content within page. Returns
-   * a pair of <String, WebPage> if a meta-redirect is discovered
-   * @param key
-   * @param page
-   * @return newly-discovered webpage (via a meta-redirect)
-   */
-  public URLWebPage process(String key, WebPage page) {
-    URLWebPage redirectedPage = null;
-    String url = TableUtil.unreverseUrl(key);
-    byte status = (byte) page.getStatus();
-    if (status != CrawlStatus.STATUS_FETCHED) {
-      if (LOG.isDebugEnabled()) {
-        LOG.debug("Skipping " + url + " as status is: " + CrawlStatus.getName(status));
-      }
-      return redirectedPage;
-    }
+			if (MAX_PARSE_TIME != -1)
+				parse = runParser(parsers[i], url, page);
+			else
+				parse = parsers[i].getParse(url, page);
 
-    Parse parse;
-    try {
-      parse = parse(url, page);
-    } catch (final Exception e) {
-      LOG.warn("Error parsing: " + url + ": " + StringUtils.stringifyException(e));
-      return redirectedPage;
-    }
+			if (parse != null
+					&& ParseStatusUtils.isSuccess(parse.getParseStatus())) {
+				return parse;
+			}
+		}
 
-    if (parse == null) {
-      return redirectedPage;
-    }
+		LOG.warn("Unable to successfully parse content " + url + " of type "
+				+ contentType);
+		return ParseStatusUtils.getEmptyParse(new ParseException(
+				"Unable to successfully parse content"), null);
+	}
 
-    final byte[] signature = sig.calculate(page);
+	private Parse runParser(Parser p, String url, WebPage page) {
+		ParseCallable pc = new ParseCallable(p, page, url);
+		FutureTask<Parse> task = new FutureTask<Parse>(pc);
+		Parse res = null;
+		Thread t = new Thread(task);
+		t.start();
+		try {
+			res = task.get(MAX_PARSE_TIME, TimeUnit.SECONDS);
+		} catch (TimeoutException e) {
+			LOG.warn("TIMEOUT parsing " + url + " with " + p);
+		} catch (Exception e) {
+			task.cancel(true);
+			res = null;
+			t.interrupt();
+		} finally {
+			t = null;
+			pc = null;
+		}
+		return res;
+	}
 
-    org.apache.nutch.storage.ParseStatus pstatus = parse.getParseStatus();
-    page.setParseStatus(pstatus);
-    if (ParseStatusUtils.isSuccess(pstatus)) {
-      if (pstatus.getMinorCode() == ParseStatusCodes.SUCCESS_REDIRECT) {
-        String newUrl = ParseStatusUtils.getMessage(pstatus);
-        int refreshTime = Integer.parseInt(ParseStatusUtils.getArg(pstatus, 1));
-        try {
-          newUrl = normalizers.normalize(newUrl, URLNormalizers.SCOPE_FETCHER);
-          newUrl = filters.filter(newUrl);
-        } catch (URLFilterException e) {
-          return redirectedPage; // TODO: is this correct
-        } catch (MalformedURLException e) {
-          return redirectedPage;
-        }
-        if (newUrl == null || newUrl.equals(url)) {
-          String reprUrl = URLUtil.chooseRepr(url, newUrl,
-              refreshTime < FetcherJob.PERM_REFRESH_TIME);
-          WebPage newWebPage = new WebPage();
-          page.setReprUrl(new Utf8(reprUrl));
-          page.putToMetadata(FetcherJob.REDIRECT_DISCOVERED, TableUtil.YES_VAL);
-          redirectedPage = new URLWebPage(reprUrl, newWebPage);
-        }
-      } else {
-        page.setText(new Utf8(parse.getText()));
-        page.setTitle(new Utf8(parse.getTitle()));
-        ByteBuffer prevSig = page.getSignature();
-        if (prevSig != null) {
-          page.setPrevSignature(prevSig);
-        }
-        page.setSignature(ByteBuffer.wrap(signature));
-        if (page.getOutlinks() != null) {
-          page.getOutlinks().clear();
-        }
-        final Outlink[] outlinks = parse.getOutlinks();
-        final int count = 0;
-        String fromHost;
-        if (ignoreExternalLinks) {
-          try {
-            fromHost = new URL(url).getHost().toLowerCase();
-          } catch (final MalformedURLException e) {
-            fromHost = null;
-          }
-        } else {
-          fromHost = null;
-        }
-        for (int i = 0; count < maxOutlinks && i < outlinks.length; i++) {
-          String toUrl = outlinks[i].getToUrl();
-          try {
-            toUrl = normalizers.normalize(toUrl, URLNormalizers.SCOPE_OUTLINK);
-            toUrl = filters.filter(toUrl);
-          } catch (final URLFilterException e) {
-            continue;
-          }
-          catch (MalformedURLException e2){
-            continue;
-          }
-          if (toUrl == null) {
-            continue;
-          }
-          String toHost;
-          if (ignoreExternalLinks) {
-            try {
-              toHost = new URL(toUrl).getHost().toLowerCase();
-            } catch (final MalformedURLException e) {
-              toHost = null;
-            }
-            if (toHost == null || !toHost.equals(fromHost)) { // external links
-              continue; // skip it
-            }
-          }
+	/**
+	 * Parses given web page and stores parsed content within page. Returns a
+	 * pair of <String, WebPage> if a meta-redirect is discovered
+	 * 
+	 * @param key
+	 * @param page
+	 * @return newly-discovered webpage (via a meta-redirect)
+	 */
+	public URLWebPage process(String key, WebPage page) {
+		URLWebPage redirectedPage = null;
+		String url = TableUtil.unreverseUrl(key);
+		byte status = (byte) page.getStatus();
+		if (status != CrawlStatus.STATUS_FETCHED) {
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("Skipping " + url + " as status is: "
+						+ CrawlStatus.getName(status));
+			}
+			return redirectedPage;
+		}
 
-          page.putToOutlinks(new Utf8(toUrl), new Utf8(outlinks[i].getAnchor()));
-        }
-        Mark.PARSE_MARK.putMark(page, Mark.FETCH_MARK.checkMark(page));
-      }
-    }
-    return redirectedPage;
-  }
+		Parse parse;
+		try {
+			parse = parse(url, page);
+		} catch (final Exception e) {
+			LOG.warn("Error parsing: " + url + ": "
+					+ StringUtils.stringifyException(e));
+			return redirectedPage;
+		}
+
+		if (parse == null) {
+			return redirectedPage;
+		}
+
+		final byte[] signature = sig.calculate(page);
+
+		org.apache.nutch.storage.ParseStatus pstatus = parse.getParseStatus();
+		page.setParseStatus(pstatus);
+		if (ParseStatusUtils.isSuccess(pstatus)) {
+			if (pstatus.getMinorCode() == ParseStatusCodes.SUCCESS_REDIRECT) {
+				String newUrl = ParseStatusUtils.getMessage(pstatus);
+				int refreshTime = Integer.parseInt(ParseStatusUtils.getArg(
+						pstatus, 1));
+				try {
+					newUrl = normalizers.normalize(newUrl,
+							URLNormalizers.SCOPE_FETCHER);
+					//newUrl = filters.filter(newUrl);
+				} catch (Exception e) {
+					return redirectedPage; // TODO: is this correct
+				} 
+				if (newUrl == null || newUrl.equals(url)) {
+					String reprUrl = URLUtil.chooseRepr(url, newUrl,
+							refreshTime < FetcherJob.PERM_REFRESH_TIME);
+					WebPage newWebPage = new WebPage();
+					page.setReprUrl(new Utf8(reprUrl));
+					page.putToMetadata(FetcherJob.REDIRECT_DISCOVERED,
+							TableUtil.YES_VAL);
+					redirectedPage = new URLWebPage(reprUrl, newWebPage);
+				}
+			} else {
+				page.setText(new Utf8(parse.getText()));
+				page.setTitle(new Utf8(parse.getTitle()));
+				ByteBuffer prevSig = page.getSignature();
+				if (prevSig != null) {
+					page.setPrevSignature(prevSig);
+				}
+				page.setSignature(ByteBuffer.wrap(signature));
+				if (page.getOutlinks() != null) {
+					page.getOutlinks().clear();
+				}
+				final Outlink[] outlinks = parse.getOutlinks();
+				final int count = 0;
+				String fromHost;
+				if (ignoreExternalLinks) {
+					try {
+						fromHost = new URL(url).getHost().toLowerCase();
+					} catch (final MalformedURLException e) {
+						fromHost = null;
+					}
+				} else {
+					fromHost = null;
+				}
+				for (int i = 0; count < maxOutlinks && i < outlinks.length; i++) {
+					String toUrl = outlinks[i].getToUrl();
+					try {
+						toUrl = normalizers.normalize(toUrl,
+								URLNormalizers.SCOPE_OUTLINK);
+						//toUrl = filters.filter(toUrl);
+					} catch (final Exception e) {
+						continue;
+					} 
+					if (toUrl == null) {
+						continue;
+					}
+					String toHost;
+					if (ignoreExternalLinks) {
+						try {
+							toHost = new URL(toUrl).getHost().toLowerCase();
+						} catch (final MalformedURLException e) {
+							toHost = null;
+						}
+						if (toHost == null || !toHost.equals(fromHost)) { // external
+																			// links
+							continue; // skip it
+						}
+					}
+
+					page.putToOutlinks(new Utf8(toUrl), new Utf8(outlinks[i]
+							.getAnchor()));
+				}
+				Mark.PARSE_MARK.putMark(page, Mark.FETCH_MARK.checkMark(page));
+			}
+		}
+		return redirectedPage;
+	}
 }

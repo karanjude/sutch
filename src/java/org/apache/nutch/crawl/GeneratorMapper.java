@@ -57,21 +57,21 @@ extends GoraMapper<String, WebPage, SelectorEntry, WebPage> {
       if (normalise) {
         url = normalizers.normalize(url, URLNormalizers.SCOPE_GENERATE_HOST_COUNT);
       }
-      if (filter && filters.filter(url) == null)
-        return;
-    } catch (URLFilterException e) {
+      //if (filter && filters.filter(url) == null)
+      //  return;
+    } catch (Exception e) {
       GeneratorJob.LOG.warn("Couldn't filter url: " + url + " (" + e.getMessage() + ")");
       return;
     }
 
     // check fetch schedule
-    if (!schedule.shouldFetch(url, page, curTime)) {
-      if (GeneratorJob.LOG.isDebugEnabled()) {
-        GeneratorJob.LOG.debug("-shouldFetch rejected '" + url + "', fetchTime=" +
-            page.getFetchTime() + ", curTime=" + curTime);
-      }
-      return;
-    }
+//    if (!schedule.shouldFetch(url, page, curTime)) {
+//      if (GeneratorJob.LOG.isDebugEnabled()) {
+//        GeneratorJob.LOG.debug("-shouldFetch rejected '" + url + "', fetchTime=" +
+//            page.getFetchTime() + ", curTime=" + curTime);
+//      }
+//      return;
+//    }
     float score = page.getScore();
     try {
       score = scoringFilters.generatorSortValue(url, page, score);

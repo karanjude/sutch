@@ -107,19 +107,21 @@ public class FetcherJob extends NutchTool implements Tool {
     @Override
     protected void map(String key, WebPage page, Context context)
         throws IOException, InterruptedException {
-      Utf8 mark = Mark.GENERATE_MARK.checkMark(page);
-      if (!NutchJob.shouldProcess(mark, batchId)) {
-        if (LOG.isDebugEnabled()) {
-          LOG.debug("Skipping " + TableUtil.unreverseUrl(key) + "; different batch id");
-        }
-        return;
-      }
-      if (shouldContinue && Mark.FETCH_MARK.checkMark(page) != null) {
-        if (LOG.isDebugEnabled()) {
-          LOG.debug("Skipping " + TableUtil.unreverseUrl(key) + "; already fetched");
-        }
-        return;
-      }
+    	  Utf8 mark = Mark.GENERATE_MARK.checkMark(page);
+    	  System.err.println("key:" +  key);
+    	  if (!NutchJob.shouldProcess(mark, batchId)) {
+    		  if (LOG.isDebugEnabled()) {
+    			  LOG.debug("Skipping " + TableUtil.unreverseUrl(key) + "; different batch id");
+    		  }
+    		  return;
+    	  }
+    	  if (shouldContinue && Mark.FETCH_MARK.checkMark(page) != null) {
+    		  if (LOG.isDebugEnabled()) {
+    			  LOG.debug("Skipping " + TableUtil.unreverseUrl(key) + "; already fetched");
+    		  }
+    		  return;
+    	  }
+    	  
       context.write(new IntWritable(random.nextInt(65536)), new FetchEntry(context
           .getConfiguration(), key, page));
     }

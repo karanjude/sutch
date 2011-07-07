@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
 
-<project name="default-crawler" default="deploy">
+<project name="default-crawler" default="jar-core">
   <import file="../build-plugin.xml"/>
 </project>

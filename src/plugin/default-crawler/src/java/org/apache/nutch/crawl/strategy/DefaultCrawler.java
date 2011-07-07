@@ -1,6 +1,7 @@
 package org.apache.nutch.crawl.strategy;
 
 import java.io.IOException;
+import java.util.Set;
 
 import org.apache.commons.net.ftp.FTPClientConfig;
 import org.apache.gora.mapreduce.GoraOutputFormat;

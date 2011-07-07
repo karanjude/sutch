@@ -27,7 +27,7 @@
   </info>
 
   <configurations>
-    <include file="../../../ivy/ivy-configurations.xml"/>
+    <include file="${nutch.root}/ivy/ivy-configurations.xml"/>
   </configurations>
 
   <publications>
@@ -37,10 +37,6 @@
 
   <dependencies>
     <dependency org="org.ccil.cowan.tagsoup" name="tagsoup" rev="1.2" conf="*->master"/>
-  </dependencies>
-  
-  <dependencies>
-    <dependency org="nekohtml" name="nekohtml" rev="0.9.5" conf="*->master"/>
   </dependencies>
   
 </ivy-module>

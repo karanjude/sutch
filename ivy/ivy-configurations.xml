@@ -21,7 +21,7 @@
     <!--these match the Maven configurations-->
     <conf name="default" extends="master"/>
     <conf name="master" description="contains the artifact but no dependencies"/>
-
+	<conf name="sources"/>
     <!--Testing pulls in everything-->
     <conf name="test" extends="default" visibility="private"
       description="the classpath needed to run tests"/>

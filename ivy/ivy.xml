@@ -100,7 +100,6 @@
 <!--
        Uncomment this to use MySQL as database with SQL as Gora store.
 -->
-
        <dependency org="mysql" name="mysql-connector-java" rev="5.1.13" conf="*->default"/>
 
 <!--

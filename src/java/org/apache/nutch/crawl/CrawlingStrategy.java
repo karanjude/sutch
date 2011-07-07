@@ -1,6 +1,7 @@
 package org.apache.nutch.crawl;
 
 import java.io.IOException;
+import java.util.Set;
 
 import org.apache.commons.net.ftp.Configurable;
 import org.apache.hadoop.fs.Path;

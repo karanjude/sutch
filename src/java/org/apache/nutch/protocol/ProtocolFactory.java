@@ -49,6 +49,7 @@ public class ProtocolFactory {
 
   public ProtocolFactory(Configuration conf) {
     this.conf = conf;
+    System.err.println("faaaaaaaaaak");
     this.extensionPoint = PluginRepository.get(conf).getExtensionPoint(
         Protocol.X_POINT_ID);
     if (this.extensionPoint == null) {
