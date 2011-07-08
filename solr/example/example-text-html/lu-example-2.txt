@@ -1,0 +1,13 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"
+        "http://www.w3.org/MarkUp/Wilbur/HTML32.dtd">
+This is some text typed as part of the Lucid How To Index Text & HTNML white paper
+
+Many files have no apparent structure, they're just words typed and saved.  So the Solr default XML format would require a lot of work.
+
+Solr 1.4, which includes the Tika file access code, is described at http://wiki.apache.org/solr/ExtractingRequestHandle .  Although it does not mention text files, it does work.
+
+test2 testing test txt 2 text2
+  	-----------
+distinguishing content: the Gettysburg Address, part 2 --
+
+Now we are engaged in a great civil war. . .testing whether that nation, or any nation so conceived and so dedicated. . . can long endure. 

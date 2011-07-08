@@ -1,0 +1,8 @@
+This is some text typed as part of the Lucid How To Index Text & HTML white paper
+
+test1 testing test txt 1
+
+  	----------- 
+distinguishing content: the Gettysburg Address, part 1 (duplicates the XML) -
+
+"Four score and seven years ago, our fathers brought forth on this continent a new nation: conceived in liberty, and dedicated to the proposition that all men are created equal. "

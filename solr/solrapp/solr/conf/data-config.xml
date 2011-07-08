@@ -1,0 +1,12 @@
+<dataConfig>
+  <dataSource type="JdbcDataSource" 
+              driver="com.mysql.jdbc.Driver"
+              url="jdbc:mysql://localhost/nutch" 
+              user="root" 
+              password=""/>
+  <document>
+    <entity name="id" 
+            query="select id, baseUrl,  CAST(content as CHAR(50000) ) as content from webpage">
+    </entity>
+  </document>
+</dataConfig>

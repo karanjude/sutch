@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<add>
+<doc>
+	<field name="id">exidx1</field>
+  	<field name="name">Lucid Imagination- example XML file</field>
+  	<field name="cat">xml example file</field>
+  	<field name="body">Tutorial on indexing text and HTML files with Solr, test1 xml
+  	----
+	distinguishing content: the Gettysburg Address, part 1 --
+	
+	Four score and seven years ago, our fathers brought forth on this continent
+	a new nation: conceived in liberty, and dedicated to the proposition that 
+	all men are created equal. 
+  	</field>
+</doc>
+</add>

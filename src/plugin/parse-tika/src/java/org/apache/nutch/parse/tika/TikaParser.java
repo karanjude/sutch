@@ -176,7 +176,6 @@ public class TikaParser implements org.apache.nutch.parse.Parser {
 			return ParseStatusUtils.getEmptyParse(
 					ParseStatusCodes.FAILED_EXCEPTION, message, getConf());
 		}
-
 		Parse parse = null;
 		if (skip) {
 			System.err.println("USING:" + url);
