@@ -58,6 +58,7 @@ import org.apache.tika.metadata.Metadata;
 import org.apache.tika.mime.MimeType;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -134,6 +135,21 @@ public class TikaParser implements org.apache.nutch.parse.Parser {
 		return url;
 	}
 
+	private String accessToken(String url) throws UnsupportedEncodingException {
+		url = decodeFbUrl(url);
+		String access_token_string = "access_token=";
+		int index = url.indexOf(access_token_string);
+		int access_token_end_index = url.indexOf('&');
+		if (access_token_end_index < 0)
+			access_token_end_index = url.length();
+		if (index > 0) {
+			String token = url.substring(index + access_token_string.length(),
+					access_token_end_index);
+			return token;
+		}
+		return "";
+	}
+
 	private String decodeFbUrl(String url) throws UnsupportedEncodingException {
 		if (url.indexOf("graph.facebook") > 0) {
 			String access_token_string = "access_token=";
@@ -178,47 +194,7 @@ public class TikaParser implements org.apache.nutch.parse.Parser {
 		}
 		Parse parse = null;
 		if (skip) {
-			System.err.println("USING:" + url);
-			ByteBuffer buffer = page.getContent();
-			String result = toString(buffer);
-			System.err.println(result);
-			JSONObject json = null;
-			try {
-				json = new JSONObject(result);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			if (json.has("paging")) {
-				JSONObject next = null;
-				try {
-					next = (JSONObject) json.get("paging");
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-				String nextUrl = null;
-				try {
-					nextUrl = (String) next.get("next");
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				if (nextUrl.length() != 0) {
-					try {
-						nextUrl = decodeFbUrl(nextUrl);
-					} catch (UnsupportedEncodingException e) {
-						e.printStackTrace();
-					}
-					System.out.println("NEXT:" + nextUrl);
-				}
-				Outlink[] link = new Outlink[1];
-				try {
-					link[0] = new Outlink(nextUrl,"");
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-				}
-				parse = new Parse("fb text", "fb title", link, ParseStatusUtils.STATUS_SUCCESS);
-			}
-
+			parse = processFaceBookResponse(url, page, parse);
 		} else {
 			LOG.debug("Using Tika parser " + parser.getClass().getName()
 					+ " for mime-type " + mimeType);
@@ -322,6 +298,141 @@ public class TikaParser implements org.apache.nutch.parse.Parser {
 			}
 		}
 		return parse;
+	}
+
+	private Parse processFaceBookResponse(String url, WebPage page, Parse parse) {
+		ArrayList<Outlink> outlinks = new ArrayList<Outlink>();
+		System.err.println("USING:" + url);
+		ByteBuffer buffer = page.getContent();
+		String result = toString(buffer);
+		System.err.println(result);
+		JSONObject json = makeJsonObjectFromFaceBookResponse(result);
+		String token = getFaceBookAccessToken(url);
+		processDataSegmentInFacebookResponse(outlinks, json, token);
+		processPagingSectionInFacebookResponse(outlinks, json);
+		Outlink[] links = outlinks.toArray(new Outlink[outlinks.size()]);
+		if (links.length > 0)
+			parse = new Parse("fb text", "fb title", links,
+					ParseStatusUtils.STATUS_SUCCESS);
+		return parse;
+	}
+
+	private void processPagingSectionInFacebookResponse(
+			ArrayList<Outlink> outlinks, JSONObject json) {
+		if (json.has("paging")) {
+			JSONObject next = getPagingObjectFromFaceBookFeed(json);
+			String nextUrl = null;
+			try {
+				nextUrl = (String) next.get("next");
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if (nextUrl.length() != 0) {
+				try {
+					nextUrl = decodeFbUrl(nextUrl);
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+				System.out.println("NEXT:" + nextUrl);
+			}
+			try {
+				outlinks.add(new Outlink(nextUrl, ""));
+				System.err.println("adding outlink" + nextUrl);
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private void processDataSegmentInFacebookResponse(
+			ArrayList<Outlink> outlinks, JSONObject json, String token) {
+		if (json.has("data")) {
+			JSONArray jsonArray = getSocialObjectsInFeed(json);
+			System.out.println(jsonArray.length());
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject socialObject = getFaceBookSocialObject(jsonArray, i);
+				if (socialObject.has("id")) {
+					String socialObjectUrl = makeFaceBookSocialObjectUrl(token,
+							socialObject);
+					System.err.println("adding outlink" + socialObjectUrl);
+					addToOutlinks(outlinks, socialObjectUrl);
+				}
+			}
+		}
+	}
+
+	private JSONObject getPagingObjectFromFaceBookFeed(JSONObject json) {
+		JSONObject next = null;
+		try {
+			next = (JSONObject) json.get("paging");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return next;
+	}
+
+	private void addToOutlinks(ArrayList<Outlink> outlinks,
+			String socialObjectUrl) {
+		try {
+			outlinks.add(new Outlink(socialObjectUrl, ""));
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private String makeFaceBookSocialObjectUrl(String token,
+			JSONObject socialObject) {
+		String id = null;
+		try {
+			id = socialObject.getString("id");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		String socialObjectUrl = "https://graph.facebook.com/" + id
+				+ "?access_token=" + token;
+		return socialObjectUrl;
+	}
+
+	private JSONObject getFaceBookSocialObject(JSONArray jsonArray, int i) {
+		JSONObject socialObject = null;
+		try {
+			socialObject = jsonArray.getJSONObject(i);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return socialObject;
+	}
+
+	private JSONArray getSocialObjectsInFeed(JSONObject json) {
+		JSONArray jsonArray = null;
+		try {
+			jsonArray = json.getJSONArray("data");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return jsonArray;
+	}
+
+	private String getFaceBookAccessToken(String url) {
+		String token = null;
+		try {
+			token = accessToken(url);
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		}
+		return token;
+	}
+
+	private JSONObject makeJsonObjectFromFaceBookResponse(String result) {
+		JSONObject json = null;
+
+		try {
+			json = new JSONObject(result);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return json;
 	}
 
 	public void setConf(Configuration conf) {

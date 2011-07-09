@@ -1,0 +1,7 @@
+{% if back %}
+ {% if most_recent %}
+  <a class="tag_it url" href="/query/q/back/{{ back_count }}/most_recent"><< back </a>
+ {% else %}
+  <a class="url" href="/query/q/back/{{ back_count }}/"><< back</a>
+ {% endif %}
+{% endif %}

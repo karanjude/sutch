@@ -1,0 +1,7 @@
+{% if next %}
+ {% if most_recent %}
+  <a class="url" href="/query/q/next/{{ next_count }}/most_recent">next >></a>
+ {% else %}
+  <a class="url" href="/query/q/next/{{ next_count }}/">next >></a>
+ {% endif %}
+{% endif %}

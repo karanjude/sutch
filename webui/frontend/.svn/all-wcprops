@@ -1,0 +1,203 @@
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/16/trunk/plugins/webui/frontend
+END
+changed.py
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/2/trunk/plugins/webui/frontend/changed.py
+END
+views.py
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/3/trunk/plugins/webui/frontend/views.py
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/2/trunk/plugins/webui/frontend/__init__.py
+END
+__init__.pyc
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/16/trunk/plugins/webui/frontend/__init__.pyc
+END
+search_client.py
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/3/trunk/plugins/webui/frontend/search_client.py
+END
+jquery.js
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/3/trunk/plugins/webui/frontend/jquery.js
+END
+client_server.py
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/2/trunk/plugins/webui/frontend/client_server.py
+END
+trial.py
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/3/trunk/plugins/webui/frontend/trial.py
+END
+try.py
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/3/trunk/plugins/webui/frontend/try.py
+END
+logger.py
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/3/trunk/plugins/webui/frontend/logger.py
+END
+tag_collector.py
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/3/trunk/plugins/webui/frontend/tag_collector.py
+END
+plugins_javascript.html
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/3/trunk/plugins/webui/frontend/plugins_javascript.html
+END
+base.html
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/2/trunk/plugins/webui/frontend/base.html
+END
+build_index.py
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/2/trunk/plugins/webui/frontend/build_index.py
+END
+update_modifications.py
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/3/trunk/plugins/webui/frontend/update_modifications.py
+END
+watch_directory.py
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/3/trunk/plugins/webui/frontend/watch_directory.py
+END
+jquery.ui.autocomplete.css
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/3/trunk/plugins/webui/frontend/jquery.ui.autocomplete.css
+END
+search_server.py
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/3/trunk/plugins/webui/frontend/search_server.py
+END
+plugins.html
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/5/trunk/plugins/webui/frontend/plugins.html
+END
+tag_server.py
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/3/trunk/plugins/webui/frontend/tag_server.py
+END
+run-me-too.py
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/3/trunk/plugins/webui/frontend/run-me-too.py
+END
+jnotify.dll
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/3/trunk/plugins/webui/frontend/jnotify.dll
+END
+most_recent_server.py
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/3/trunk/plugins/webui/frontend/most_recent_server.py
+END
+update_index.py
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/3/trunk/plugins/webui/frontend/update_index.py
+END
+pure_client.py
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/3/trunk/plugins/webui/frontend/pure_client.py
+END
+launch_all.cmd
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/3/trunk/plugins/webui/frontend/launch_all.cmd
+END
+test.py
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/3/trunk/plugins/webui/frontend/test.py
+END
+resync_time.py
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/3/trunk/plugins/webui/frontend/resync_time.py
+END
+models.py
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/3/trunk/plugins/webui/frontend/models.py
+END
+tagify.py
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/3/trunk/plugins/webui/frontend/tagify.py
+END
+index.html
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/3/trunk/plugins/webui/frontend/index.html
+END
+auto_complete_server.py
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/2/trunk/plugins/webui/frontend/auto_complete_server.py
+END
+run-me.jar
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/3/trunk/plugins/webui/frontend/run-me.jar
+END

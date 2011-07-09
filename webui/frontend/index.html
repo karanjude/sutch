@@ -1,0 +1,24 @@
+<html>
+<head>
+{% include "plugins_javascript.html" %}
+{% include "plugins_css.html" %}
+{% include "main_css.html" %}
+{% include "main_js.html" %}
+</head>
+<body style="background-color:#ffff99;" id="body">
+<div id="super_up"></div>
+{% include "handle_search_query_submit.html" %}
+{% include "handle_back.html" %}&nbsp;{% include "handle_next.html" %}{% include "handle_top_decoration.html" %}
+</br></br>
+{% for orig,url,type in data %}
+  <div class="holder">
+   <span style="padding:5px;"><a href="{{ orig }}" class="url open">{{ orig }}</a></span>
+   {% include "handle_content_type.html" %}
+   {% include "handle_add_ons_per_content.html" %}
+  </div>
+{% endfor %}
+{% include "handle_misc_plugins.html" %}
+</br></br>
+{% include "handle_back.html" %}&nbsp;{% include "handle_next.html" %}{% include "handle_bottom_decoration.html" %}
+</body>
+</html>

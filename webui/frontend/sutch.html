@@ -1,0 +1,70 @@
+<html>
+{% include "plugins_javascript.html" %}
+{% include "main_js.html" %}
+<head>
+<style type="text/css">
+div.search {
+margin-left:auto;
+margin-right:auto;
+width: 40%;
+}
+</style>
+</head>
+<body>
+
+<div>
+<form action="/query/q/" id="searchForm" style="background-color:black;padding:10px;">
+<span style="color:white;float:right;"><b>Sutch...</b></Span>
+<label style="color:white;" >Query</label>
+<input type="text" style="border:1px solid;border-color:black;" name="q" id="q" size="100" value="" autocomplete="off"/>
+<input type="button" style="border:1px solid;border-color:white;color:white;background-color:black;" value="search" id="submit_button"/>
+</form>
+</div>
+
+<div id="result"></div>
+
+<script>
+  /* attach a submit handler to the form */
+  $("#searchForm").submit(function(event) {
+
+    /* stop form from submitting normally */
+    event.preventDefault(); 
+        
+    /* get some values from elements on the page: */
+  var $form = $( this ),
+  term = $form.find( 'input[name="q"]' ).val(),
+  url = $form.attr( 'action' );
+
+    /* Send the data using post and put the results in a div */
+  $.post( url, { q: term },
+  function( data ) {
+  $("#result").empty();
+
+  $.each(data.result, function(i,item){
+  var fb_object = $.parseJSON(item);
+  if(fb_object.hasOwnProperty('actions')){
+  var actions = fb_object.actions;
+  var link = actions[0].link;
+  console.log(link);
+  var a  = document.createElement('a');
+  a.href = link;
+  $("<a href='"+ link  +"'>"+fb_object.message + "</a></br>").prependTo("#result");
+  //$("#result").append(item).append($("</br></br></br>"));
+
+  }
+
+
+  });
+  
+  },
+  "json"
+  );
+  });
+</script>
+
+
+
+<div>
+</div>
+</body>
+</html>

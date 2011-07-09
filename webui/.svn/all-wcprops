@@ -1,0 +1,143 @@
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/!svn/ver/16/trunk/plugins/webui
+END
+manage.py
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/3/trunk/plugins/webui/manage.py
+END
+handle_gif.html
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/3/trunk/plugins/webui/handle_gif.html
+END
+main_js.html
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/3/trunk/plugins/webui/main_js.html
+END
+handle_add_ons_per_content.html
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/3/trunk/plugins/webui/handle_add_ons_per_content.html
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/2/trunk/plugins/webui/__init__.py
+END
+handle_top_decoration.html
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/3/trunk/plugins/webui/handle_top_decoration.html
+END
+settings.py
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/3/trunk/plugins/webui/settings.py
+END
+handle_bottom_decoration.html
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/3/trunk/plugins/webui/handle_bottom_decoration.html
+END
+handle_content_type.html
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/3/trunk/plugins/webui/handle_content_type.html
+END
+handle_search_query_submit.html
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/3/trunk/plugins/webui/handle_search_query_submit.html
+END
+handle_next.html
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/3/trunk/plugins/webui/handle_next.html
+END
+plugins_css.html
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/3/trunk/plugins/webui/plugins_css.html
+END
+handle_rm.html
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/3/trunk/plugins/webui/handle_rm.html
+END
+handle_avi.html
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/3/trunk/plugins/webui/handle_avi.html
+END
+handle_jpg.html
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/3/trunk/plugins/webui/handle_jpg.html
+END
+main_css.html
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/3/trunk/plugins/webui/main_css.html
+END
+handle_png.html
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/3/trunk/plugins/webui/handle_png.html
+END
+main_body.html
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/3/trunk/plugins/webui/main_body.html
+END
+handle_misc_plugins.html
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/3/trunk/plugins/webui/handle_misc_plugins.html
+END
+plugins_javascript.html
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/3/trunk/plugins/webui/plugins_javascript.html
+END
+urls.py
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/3/trunk/plugins/webui/urls.py
+END
+handle_mp3.html
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/3/trunk/plugins/webui/handle_mp3.html
+END
+handle_back.html
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/3/trunk/plugins/webui/handle_back.html
+END

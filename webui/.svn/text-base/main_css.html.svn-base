@@ -1,0 +1,67 @@
+<style type="text/css">
+
+a.basic {
+color:#ffffff;
+}
+
+a.basic:link {
+text-decoration: none: color:gray;
+}
+
+a.basic:visited {
+text-decoration: none: color:gray;
+}
+
+a.basic:active {
+text-decoration: none;color : gray;
+}
+
+a.basic:hover {
+text-decoration: underline; color: gray;
+}
+
+a.url {
+color:black;
+}
+
+a.url:link {
+text-decoration: none: color:gray;
+}
+
+a.url:visited {
+text-decoration: none: color:gray;
+}
+
+a.url:active {
+text-decoration: none;color : gray;
+}
+
+a.url:hover {
+text-decoration: underline; color: gray;
+}
+
+div.add_border {
+ border:1px dotted;
+}
+
+div.holder {
+ padding:3px;
+ margin-bottom:5px;
+ width:80%;
+}
+
+a.open {
+ font-size:17px;
+}
+
+div.add_ons {
+ font-size:14px;
+ padding:5px;
+ margin-width:5px;
+}
+
+a.tag_it {
+ color:gray;
+ padding:5px;
+}
+</style>

@@ -1,0 +1,49 @@
+<html>
+<body style="background-color:#ffff99;" id="body">
+Total Number Of Plugins : {{ plugin_count }}
+</br></br>
+<a href="/plugins/stop?p=init">Stop Moo</a>
+</br></br>
+<table border='1'>
+<tr>
+<th>PLUGIN NAME</th>
+<th>PLUGIN PARENT</th>
+<th>INSTALLATION DATE</th>
+<th>AUTO START</th>
+<th>RUN EVERY TIME</th>
+<th>RUN COUNT</th>
+<th>SEQUENCE</th>
+<th>STATE</th>
+{% for name,parent,date,auto_start,run_once,run_count,sequence,state in all_plugins %}
+<tr>
+<td>{{ name }}</td>
+<td>{{ parent }}</td>
+<td>{{ date }}</td>
+
+{% ifequal auto_start 1 %}
+<td>True</td>
+{% else %}
+<td>False</td>
+{% endifequal %}
+
+{% ifequal run_once 1 %}
+<td>FALSE</td>
+{% else %}
+<td>TRUE</td>
+{% endifequal %}
+
+<td>{{ run_count }}</td>
+<td>{{ sequence }}</td>
+<td>{{ state }}</td>
+{% ifequal state "stopped" %}
+<td><a href="/plugins/start?p={{ name }}">start</a></td>
+{% endifequal %}
+{% ifequal state "started" %}
+<td><a href="/plugins/stop?p={{ name }}">stop</a></td>
+{% endifequal %}
+</tr>
+{% endfor %}
+</tr>
+</table>
+</body>
+</html>

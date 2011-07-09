@@ -1,0 +1,271 @@
+<html>
+<head>
+
+
+<script type="text/javascript" src="/static_media/jquery.js"></script>
+<script type="text/javascript" src="/static_media/jquery.james.js"></script>
+<script type="text/javascript" src="/static_media/fancybox/jquery.fancybox-1.2.1/jquery.fancybox/jquery.easing.1.3.js"></script>
+<script type="text/javascript" src="/static_media/fancybox/jquery.fancybox-1.2.1/jquery.fancybox/jquery.fancybox-1.2.1.pack.js"></script>
+<script type="text/javascript" src="/static_media/scrollto/jquery.scrollto.js"></script>
+<script type="text/javascript" src="/static_media/jquery.media.js"></script>
+<script type="text/javascript" src="/static_media/shadowbox/shadowbox-source-3.0b/shadowbox.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/static_media/shadowbox/shadowbox-source-3.0b/shadowbox.css">
+<link rel="stylesheet" type="text/css" href="/static_media/fancybox/jquery.fancybox-1.2.1/jquery.fancybox/jquery.fancybox.css" media="screen" />
+<link type="text/css" rel="stylesheet" href="/static_media/james.css" />
+
+<style type="text/css">
+
+a.basic {
+color:#ffffff;
+}
+
+a.basic:link {
+text-decoration: none: color:gray;
+}
+
+a.basic:visited {
+text-decoration: none: color:gray;
+}
+
+a.basic:active {
+text-decoration: none;color : gray;
+}
+
+a.basic:hover {
+text-decoration: underline; color: gray;
+}
+
+a.url {
+color:black;
+}
+
+a.url:link {
+text-decoration: none: color:gray;
+}
+
+a.url:visited {
+text-decoration: none: color:gray;
+}
+
+a.url:active {
+text-decoration: none;color : gray;
+}
+
+a.url:hover {
+text-decoration: underline; color: gray;
+}
+
+div.add_border {
+ border:1px dotted;
+}
+
+div.holder {
+ padding:3px;
+ margin-bottom:5px;
+ width:80%;
+}
+
+a.open {
+ font-size:17px;
+}
+
+div.add_ons {
+ font-size:14px;
+ padding:5px;
+ margin-width:5px;
+}
+
+a.tag_it {
+ color:gray;
+ padding:5px;
+}
+
+
+</style>
+<script type="text/javascript">
+   Shadowbox.init({
+    players: ["qt"]
+   });
+function do_stuff(v){
+ return "<img src='" + v + "' />";
+}
+
+ function launch(o){
+  $.get("/launch/", {url:o.href});
+ }
+
+ function do_mouse(o){
+ }
+
+ $(document).ready(function(){
+   $.fn.media.defaults.mp3Player = '/static_media/mediaplayer/player.swf';
+
+
+   $(".open").click(function(){
+    $.get("/launch/",{url:'"'+$(this).attr("href")+'"'});
+    $.get("/most_recent/",{url:$(this).attr("href")});
+    return false;
+   });
+ 
+   $("#q").james("/autocomplete/",{ 
+    minlength:1
+   });
+
+   $("#q").keypress(function(e){
+    if((e.which == 8) || ($(this).val().trim() == "")){
+      $.get("/reset_autocomplete/",function(d){});
+    }
+   });
+
+   $("#q").keypress(function(e){
+    if((e.which == 13) || (e.keyCode == 13)){
+     //$("#submit_button").click();
+     return false;
+   }
+   });
+
+   $(".holder").mouseover(function(e){
+     $(this).addClass("add_border");
+     $(".tag_it", $(this)).toggle();
+   }).mouseout(function(e){
+     $(this).removeClass("add_border");
+     $(".tag_it", $(this)).toggle();
+   });
+
+   $(".tag_it").toggle();
+
+
+   $(".img").each(function(){
+    var src = $("img",$(this)).attr("src");
+    //src = src.replace(/\/images\//,"");
+    $(this).attr("href",src);
+   });
+ 
+   $(".img").fancybox();
+
+   $("#up").click(function(){
+    $.scrollTo('#down', 1800 )
+   });
+
+   $("#down").click(function(){
+    $.scrollTo('#super_up', 1800 )
+   });
+
+
+   $(".open").each(function(i){
+     var href = $(this).attr("href")
+     var split_char = '\\';
+     var parts = href.split(split_char);
+     var result = [];
+     var last_result = "";
+     for(var i in parts){
+      last_result += parts[i];
+      if(i < (parts.length - 1)){
+       last_result += split_char;
+      }
+      result.push("<a href='" + last_result + "' class='url open' onmousemove='do_mouse(this);'  onclick='launch(this);return false;';>" + parts[i] + "</a>")
+     }
+     $(this).replaceWith(result.join(split_char));
+   });
+
+   $(".media").media({ width: 300, height: 20 });
+
+ });
+</script>
+</head>
+<body style="background-color:#ffff99;" id="body">
+<div id="super_up"></div>
+<form action="/query/q/" method="post" style="background-color:black;padding:10px;">
+<span style="color:white;float:right;"><img src="/static_media/images/cow.png" width="50" height="50"></span>
+<span style="color:white;float:right;"><b>MOoo...</b></Span>
+<label style="color:white;" >Query</label>
+<input type="text" style="border:1px solid;border-color:black;" name="q" id="q" size="100" value="" autocomplete="off"/>
+<input type="submit" style="border:1px solid;border-color:white;color:white;background-color:black;" value="search" id="submit_button"/>
+</form>
+
+{% if back %}
+ {% if most_recent %}
+  <a class="tag_it url" href="/query/q/back/{{ back_count }}/most_recent"><< back </a>
+ {% else %}
+  <a class="url" href="/query/q/back/{{ back_count }}/"><< back</a>
+ {% endif %}
+{% endif %}
+&nbsp;
+{% if next %}
+ {% if most_recent %}
+  <a class="url" href="/query/q/next/{{ next_count }}/most_recent">next >></a>
+ {% else %}
+  <a class="url" href="/query/q/next/{{ next_count }}/">next >></a>
+ {% endif %}
+{% endif %}
+{% if data %}
+&nbsp; <a id="up" href="#">down</a>
+{% endif %}
+</br>
+</br>
+{% for orig,url,type in data %}
+  <div class="holder">
+   <span style="padding:5px;"><a href="{{ orig }}" class="url open">{{ orig }}</a></span>
+  {% ifequal type "png" %}
+   </br>
+   <a rel="group" href="#" class="img"><img src="{{ url }}" width="100" height="100" style="border-style:none;"/></a>
+  {% endifequal %}
+  {% ifequal type "gif" %}
+   </br>
+   <a rel="group" href="#" class="img"><img src="{{ url }}" width="100" height="100" style="border-style:none;"/></a>
+  {% endifequal %}
+  {% ifequal type "jpg" %}
+   </br>
+   <a rel="group" href="#" class="img"><img src="{{ url }}" width="100" height="100" style="border-style:none;"/></a>
+  {% endifequal %}
+  {% ifequal type "avi" %}
+      </br>
+      <a rel="shadowbox"  href="{{ url }}"><img src="/static_media/fancybox/jquery.fancybox-1.2.1/jquery.fancybox/fancy_right.png" style="border-style:none;" /> </a> 
+  {% endifequal %}
+    {% ifequal type "mp3" %}
+   </br>
+   <a class="media" href="{{ url }}"></a> 
+  {% endifequal %}
+  {% ifequal type "rm" %}
+   </br></br>
+   <a class="media" href="{{ url }}"></a> 
+  {% endifequal %}
+
+  <div class="add_ons" align="right">
+   <a href="#" class="tag_it">Tag It</a>
+   <a href="#" class="tag_it">WooHoo</a>
+   <a href="#" class="tag_it">Ahhh!</a>
+   <a href="#" class="tag_it">Hide</a>
+   <a href="#" class="tag_it">Save</a>
+  </div>
+  </div>
+{% endfor %}
+<div style="float:right;
+border-left:1px dashed;
+border-color:grey;
+padding:2%;
+margin-top:-25%;">
+ <a href="/most_clicked" style="float:right;">Most Clicked</a>
+</div>
+</br></br>
+{% if back %}
+ {% if most_recent %}
+  <a class="url tag_it" href="/query/q/back/{{ back_count }}/most_recent"><< back </a>
+ {% else %}
+  <a class="url" href="/query/q/back/{{ back_count }}/"><< back</a>
+ {% endif %}
+{% endif %}
+&nbsp;
+{% if next %}
+ {% if most_recent %}
+  <a class="url" href="/query/q/next/{{ next_count }}/most_recent">next >></a>
+ {% else %}
+  <a class="url" href="/query/q/next/{{ next_count }}/">next >></a>
+ {% endif %}
+{% endif %}
+{% if data %}
+&nbsp;<a id="down" href="#">up</a>
+{% endif %}
+</body>
+</html>
