@@ -8,6 +8,7 @@ import os
 import io
 import urllib
 import json
+import MySQLdb as mysql
 
 MAX_COUNT = 10
 
@@ -39,7 +40,10 @@ def index(request):
 	print request.GET
 	print request.POST
 	print request.REQUEST
-	return HttpResponseRedirect("https://www.facebook.com/dialog/oauth?client_id=136358823108222&redirect_uri=http://4sfw.localtunnel.com/do/&scope=user_about_me,user_activities,user_birthday,user_checkins,email,read_stream,offline_access")
+	localtunnel_url = "http://3v9d.localtunnel.com"
+	url = "https://www.facebook.com/dialog/oauth?client_id=136358823108222&redirect_uri=%s/do/&scope=user_about_me,user_activities,user_birthday,user_checkins,email,read_stream,offline_access,publish_stream" % (localtunnel_url)
+	print "about to redirect to ", url
+	return HttpResponseRedirect(url)
 
 def sutch(request):
 	return render_to_response('frontend/sutch.html',{})
@@ -52,14 +56,32 @@ def do(request):
 	print "codeeeeeeeee:", code
 	appid = "136358823108222"
 	secret = "e559f722b145f598b1d507021cfd6245"
-	url = "https://graph.facebook.com/oauth/access_token?client_id=%s&redirect_uri=http://4sfw.localtunnel.com/do/&client_secret=%s&code=%s" % (appid,secret,code)
+	localtunnel_url = "http://3v9d.localtunnel.com"
+	url = "https://graph.facebook.com/oauth/access_token?client_id=%s&redirect_uri=%s/do/&client_secret=%s&code=%s" % (appid,localtunnel_url,secret,code)
 	print 
 	print url
 	u = urllib.urlopen(url)
 	d = u.read()
 	print 
-	print d
-	return HttpResponse(d)
+	access_token = d.split("access_token=")[1]
+	
+	conn = mysql.connect('localhost','root','','data')
+	cursor = conn.cursor()
+
+	company = "facebook"
+	used = 0
+	insert_statement = "insert into authentication values('%s','%s',%s)" % (access_token,company, used )
+
+	print insert_statement
+	try:
+		cursor.execute(insert_statement)
+		result = "thank you for registering with wazzup, your access token is : %s" % (access_token)
+		return HttpResponse(result)
+	except:
+		return HttpResponse("You Have already registered, thanks")
+	cursor.close()
+	conn.close()
+
 
 def done(request):
 	print request.GET

@@ -28,6 +28,7 @@ import org.apache.hadoop.util.StringUtils;
 import org.apache.nutch.scoring.ScoreDatum;
 import org.apache.nutch.scoring.ScoringFilterException;
 import org.apache.nutch.scoring.ScoringFilters;
+import org.apache.nutch.storage.Mark;
 import org.apache.nutch.storage.WebPage;
 import org.apache.nutch.util.TableUtil;
 import org.apache.nutch.util.WebPageWritable;
@@ -46,7 +47,11 @@ extends GoraMapper<String, WebPage, String, NutchWritable> {
   throws IOException, InterruptedException {
 
     String url = TableUtil.unreverseUrl(key);
-
+    Utf8 dbUpdateMark = Mark.UPDATEDB_MARK.checkMark(page);
+    if(dbUpdateMark != null){
+    	return;
+    }
+    
     scoreData.clear();
     Map<Utf8, Utf8> outlinks = page.getOutlinks();
     if (outlinks != null) {

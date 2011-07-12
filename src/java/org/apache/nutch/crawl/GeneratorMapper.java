@@ -28,6 +28,7 @@ import org.apache.nutch.scoring.ScoringFilters;
 import org.apache.nutch.storage.Mark;
 import org.apache.nutch.storage.WebPage;
 import org.apache.nutch.util.TableUtil;
+import org.apache.avro.util.Utf8;
 import org.apache.gora.mapreduce.GoraMapper;
 
 public class GeneratorMapper
@@ -46,7 +47,12 @@ extends GoraMapper<String, WebPage, SelectorEntry, WebPage> {
       Context context) throws IOException, InterruptedException {
     String url = TableUtil.unreverseUrl(reversedUrl);
 
-    if (Mark.GENERATE_MARK.checkMark(page) != null) {
+    Utf8 hasBeenUpdatedInDb = Mark.UPDATEDB_MARK.checkMark(page);
+    if(null != hasBeenUpdatedInDb){
+    	return;
+    }
+    Utf8 checkMark = Mark.GENERATE_MARK.checkMark(page);
+	if (checkMark != null) {
       if (GeneratorJob.LOG.isDebugEnabled()) {
         GeneratorJob.LOG.debug("Skipping " + url + "; already generated");
       }
@@ -65,13 +71,14 @@ extends GoraMapper<String, WebPage, SelectorEntry, WebPage> {
     }
 
     // check fetch schedule
-//    if (!schedule.shouldFetch(url, page, curTime)) {
-//      if (GeneratorJob.LOG.isDebugEnabled()) {
-//        GeneratorJob.LOG.debug("-shouldFetch rejected '" + url + "', fetchTime=" +
-//            page.getFetchTime() + ", curTime=" + curTime);
-//      }
-//      return;
-//    }
+		// if (!schedule.shouldFetch(url, page, curTime)) {
+		// if (GeneratorJob.LOG.isDebugEnabled()) {
+		// GeneratorJob.LOG.debug("-shouldFetch rejected '" + url
+		// + "', fetchTime=" + page.getFetchTime() + ", curTime="
+		// + curTime);
+		// }
+		// return;
+		// }
     float score = page.getScore();
     try {
       score = scoringFilters.generatorSortValue(url, page, score);

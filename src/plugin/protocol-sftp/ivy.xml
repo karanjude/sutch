@@ -28,7 +28,7 @@
 
   <configurations>
     <!--include file="${nutch.root}/ivy/ivy-configurations.xml"/-->
-   <include file="${basedir}/ivy/ivy-configurations.xml"/>
+   <include file="${nutch.root}/ivy/ivy-configurations.xml"/>
 
   </configurations>
 

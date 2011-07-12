@@ -310,10 +310,13 @@ public class TikaParser implements org.apache.nutch.parse.Parser {
 		String token = getFaceBookAccessToken(url);
 		processDataSegmentInFacebookResponse(outlinks, json, token);
 		processPagingSectionInFacebookResponse(outlinks, json);
-		Outlink[] links = outlinks.toArray(new Outlink[outlinks.size()]);
-		if (links.length > 0)
-			parse = new Parse("fb text", "fb title", links,
-					ParseStatusUtils.STATUS_SUCCESS);
+		Outlink[] links = new Outlink[0];
+		if (outlinks.size() > 0)
+			links = outlinks.toArray(new Outlink[outlinks.size()]);
+		ParseStatus status = ParseStatusUtils.STATUS_SUCCESS;
+		status.setMajorCode(ParseStatusCodes.SUCCESS);
+		status.setMinorCode(ParseStatusCodes.SUCCESS_OK);
+		parse = new Parse("fb text", "fb title", links, status);
 		return parse;
 	}
 
