@@ -11,6 +11,7 @@ import json
 import MySQLdb as mysql
 
 MAX_COUNT = 10
+LOCAL_TUNNEL_URL = "http://107.20.249.171"
 
 class FileIterWrapper(object):
 	def __init__(self, flo, chunk_size = 1024**2):
@@ -36,14 +37,15 @@ def filter_png(path):
 			return (path,"/images/%s" % path, "handle_"+extension[1:]+".html")
 	return (path,path,"url")
 
-def index(request):
+def indexmeup(request):
 	print request.GET
 	print request.POST
 	print request.REQUEST
-	localtunnel_url = "http://3v9d.localtunnel.com"
+	localtunnel_url = LOCAL_TUNNEL_URL
 	url = "https://www.facebook.com/dialog/oauth?client_id=136358823108222&redirect_uri=%s/do/&scope=user_about_me,user_activities,user_birthday,user_checkins,email,read_stream,offline_access,publish_stream" % (localtunnel_url)
 	print "about to redirect to ", url
 	return HttpResponseRedirect(url)
+
 
 def sutch(request):
 	return render_to_response('frontend/sutch.html',{})
@@ -56,7 +58,7 @@ def do(request):
 	print "codeeeeeeeee:", code
 	appid = "136358823108222"
 	secret = "e559f722b145f598b1d507021cfd6245"
-	localtunnel_url = "http://3v9d.localtunnel.com"
+	localtunnel_url = LOCAL_TUNNEL_URL
 	url = "https://graph.facebook.com/oauth/access_token?client_id=%s&redirect_uri=%s/do/&client_secret=%s&code=%s" % (appid,localtunnel_url,secret,code)
 	print 
 	print url
@@ -65,22 +67,28 @@ def do(request):
 	print 
 	access_token = d.split("access_token=")[1]
 	
-	conn = mysql.connect('localhost','root','','data')
+	conn = mysql.connect('localhost','root','root','data')
 	cursor = conn.cursor()
 
 	company = "facebook"
-	used = 0
-	insert_statement = "insert into authentication values('%s','%s',%s)" % (access_token,company, used )
+        used = 0
+        user_id = None
+        posted = 0
+        user_name = None
+        insert_statement = "insert into authentication values('%s','%s',%s,NULL,%s,NULL)" % (access_token,company, used,  posted)
 
 	print insert_statement
+	r = None
 	try:
 		cursor.execute(insert_statement)
-		result = "thank you for registering with wazzup, your access token is : %s" % (access_token)
-		return HttpResponse(result)
-	except:
-		return HttpResponse("You Have already registered, thanks")
+		r = "Thanks for registering with us, you will be able to search your data soon"
+	except Exception as e:
+		r = "You have already registered with us"
+		print e
+
 	cursor.close()
 	conn.close()
+	return render_to_response('frontend/sutch.html',{'info':r})
 
 
 def done(request):

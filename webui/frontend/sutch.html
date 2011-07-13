@@ -12,6 +12,12 @@ width: 40%;
 </head>
 <body>
 
+{% if info %}
+ <script>
+  alert('{{ info }}');
+ </script>
+{% endif %}
+
 <div>
 <form action="/query/q/" id="searchForm" style="background-color:black;padding:10px;">
 <span style="color:white;float:right;"><b>Sutch...</b></Span>
@@ -19,6 +25,11 @@ width: 40%;
 <input type="text" style="border:1px solid;border-color:black;" name="q" id="q" size="100" value="" autocomplete="off"/>
 <input type="button" style="border:1px solid;border-color:white;color:white;background-color:black;" value="search" id="submit_button"/>
 </form>
+</div>
+
+
+<div id="info" style="float:right;">
+<a href="/indexmeup/"> Click here to sign up for Searching Your Facebook Data</a>
 </div>
 
 <div id="result"></div>

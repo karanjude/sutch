@@ -8,7 +8,8 @@ from django.conf import settings
 urlpatterns = patterns('',
     # Example:
     # (r'^desksearch/', include('webui.foo.urls')),
-      	(r'^$', 'webui.frontend.views.index'),
+      	(r'^$', 'webui.frontend.views.sutch'),
+      	(r'^indexmeup/$', 'webui.frontend.views.indexmeup'),
       	(r'^sutch/$', 'webui.frontend.views.sutch'),
         (r'^do/$', 'webui.frontend.views.do'),
         (r'^done/$', 'webui.frontend.views.done'),
