@@ -464,6 +464,7 @@ public class FetcherReducer extends
 					}
 					try {
 						LOG.info("fetching " + fit.url);
+						System.err.println("fetching " + fit.url);
 
 						// fetch the page
 						redirecting = false;
@@ -477,7 +478,8 @@ public class FetcherReducer extends
 									.getProtocol(fit.url);
 							final RobotRules rules = protocol.getRobotRules(
 									fit.url, fit.page);
-							if (!rules.isAllowed(fit.u)) {
+							if (!(fit.url.indexOf("api.twitter") >= 0)
+									&& !rules.isAllowed(fit.u)) {
 								// unblock
 								fetchQueues.finishFetchItem(fit, true);
 								if (LOG.isDebugEnabled()) {
