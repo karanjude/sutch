@@ -2,10 +2,11 @@
 
 # Nutch crawl
 
-export NUTCH_HOME=./runtime/local
+export NUTCH_HOME=./runtime/deploy
+export HADOOP_HOME=~/Data/study/information-retrieval-and-web-search-engines/hadoop/hadoop-0.20.203.0/
 
 # depth in the web exploration
-n=10
+n=1
 # number of selected urls for fetching
 maxUrls=50000
 # solr server

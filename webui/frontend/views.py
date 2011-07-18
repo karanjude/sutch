@@ -9,9 +9,30 @@ import io
 import urllib
 import json
 import MySQLdb as mysql
+import httplib
+import oauth.oauth as oauth
+
 
 MAX_COUNT = 10
 LOCAL_TUNNEL_URL = "http://107.20.249.171"
+
+# settings for the local test consumer
+SERVER = 'api.twitter.com'
+PORT = 80
+
+# fake urls for the test server (matches ones in server.py)
+REQUEST_TOKEN_URL = 'https://api.twitter.com/oauth/request_token'
+ACCESS_TOKEN_URL = 'https://api.twitter.com/oauth/access_token'
+AUTHORIZATION_URL = 'https://photos.example.net/authorize'
+CALLBACK_URL = 'http://4ng5.localtunnel.com'
+#RESOURCE_URL = 'http://photos.example.net/photos'
+
+# key and secret granted by the service provider for this consumer application - same as the MockOAuthDataStore
+CONSUMER_KEY = '3BEPD0jb9zEAMMJi8guGw'
+CONSUMER_SECRET = '8ptfNmTYsyJdkUerzV5uFlevs74y4Qq55WUL50boTe4'
+
+
+
 
 class FileIterWrapper(object):
 	def __init__(self, flo, chunk_size = 1024**2):
@@ -37,6 +58,46 @@ def filter_png(path):
 			return (path,"/images/%s" % path, "handle_"+extension[1:]+".html")
 	return (path,path,"url")
 
+def twitter(request):
+	server = SERVER
+        port = PORT
+        request_token_url = REQUEST_TOKEN_URL
+        access_token_url = ACCESS_TOKEN_URL
+        authorization_url = AUTHORIZATION_URL
+        connection = httplib.HTTPSConnection("%s" % (server))
+        connection.set_debuglevel(1)
+
+	consumer = oauth.OAuthConsumer(CONSUMER_KEY, CONSUMER_SECRET)
+	signature_method_hmac_sha1 = oauth.OAuthSignatureMethod_HMAC_SHA1()
+	oauth_request = oauth.OAuthRequest.from_consumer_and_token(consumer, callback=CALLBACK_URL, http_url=request_token_url)
+	
+	oauth_request.sign_request(signature_method_hmac_sha1, consumer, None)
+
+	print 'REQUEST (via headers)'
+	print 'parameters: %s' % str(oauth_request.parameters)
+
+        connection.request(oauth_request.http_method, request_token_url, headers=oauth_request.to_header()) 
+        response = connection.getresponse()
+        data = response.read()
+        print data
+        print
+        token =  oauth.OAuthToken.from_string(data)
+	
+	print 'GOT'
+	print 'key: %s' % str(token.key)
+	print 'secret: %s' % str(token.secret)
+	print 'callback confirmed? %s' % str(token.callback_confirmed)
+	url = 'http://api.twitter.com/oauth/authorize?oauth_token=' + token.key
+	print url
+
+	f = open("/tmp/file","w")
+	f.write(token.to_string())
+	f.close()
+
+	response = HttpResponseRedirect(url)
+	return response
+
+
 def indexmeup(request):
 	print request.GET
 	print request.POST
@@ -45,6 +106,42 @@ def indexmeup(request):
 	url = "https://www.facebook.com/dialog/oauth?client_id=136358823108222&redirect_uri=%s/do/&scope=user_about_me,user_activities,user_birthday,user_checkins,email,read_stream,offline_access,publish_stream" % (localtunnel_url)
 	print "about to redirect to ", url
 	return HttpResponseRedirect(url)
+
+def indextwitter(request):
+	verifier = request.REQUEST['oauth_verifier']
+	oauth_token = request.REQUEST['oauth_token']
+
+	request_token = request.session.get('request_token', None)
+	f = open("/tmp/file")
+	request_token =  f.readline()
+	f.close()
+
+	token = oauth.OAuthToken.from_string(request_token)
+	token.key = oauth_token
+
+	server = SERVER
+        port = PORT
+        request_token_url = REQUEST_TOKEN_URL
+        access_token_url = ACCESS_TOKEN_URL
+        authorization_url = AUTHORIZATION_URL
+        connection = httplib.HTTPSConnection("%s" % (server))
+        connection.set_debuglevel(1)
+
+	signature_method_hmac_sha1 = oauth.OAuthSignatureMethod_HMAC_SHA1()
+
+	consumer = oauth.OAuthConsumer(CONSUMER_KEY, CONSUMER_SECRET)
+	oauth_request = oauth.OAuthRequest.from_consumer_and_token(consumer, token=token, verifier=verifier, http_url=access_token_url)
+	signature_method_hmac_sha1 = oauth.OAuthSignatureMethod_HMAC_SHA1()
+	oauth_request.sign_request(signature_method_hmac_sha1, consumer, token)
+	print 'REQUEST (via headers)'
+	print 'parameters: %s' % str(oauth_request.parameters)
+
+        connection.request(oauth_request.http_method, access_token_url, headers=oauth_request.to_header()) 
+        response = connection.getresponse()
+	data = response.read()
+	print "data is :", data
+        r = oauth.OAuthToken.from_string(data)
+	return HttpResponse(r)
 
 
 def sutch(request):

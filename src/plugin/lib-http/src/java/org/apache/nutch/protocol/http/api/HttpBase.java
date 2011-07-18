@@ -18,7 +18,10 @@ package org.apache.nutch.protocol.http.api;
 
 // JDK imports
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -27,6 +30,8 @@ import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,8 +39,10 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.apache.nutch.metadata.Metadata;
 import org.apache.nutch.metadata.SpellCheckedMetadata;
@@ -52,6 +59,14 @@ import org.apache.nutch.util.GZIPUtils;
 import org.apache.nutch.util.DeflateUtils;
 import org.apache.nutch.util.LogUtil;
 import org.apache.nutch.util.MimeUtil;
+
+import twitter4j.Paging;
+import twitter4j.ResponseList;
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.conf.ConfigurationBuilder;
 
 /**
  * @author J&eacute;r&ocirc;me Charron
@@ -119,6 +134,22 @@ public abstract class HttpBase implements Protocol {
 	public static CharsetEncoder encoder = charset.newEncoder();
 	public static CharsetDecoder decoder = charset.newDecoder();
 
+	private String host;
+
+	private Response response;
+
+	private byte[] contents;
+
+	private URL u;
+
+	private int code;
+
+	private Content c;
+
+	private String contentType;
+
+	private Metadata headers;
+
 	public static ByteBuffer toByteBUffer(String msg) {
 		try {
 			encoder.reset();
@@ -155,62 +186,19 @@ public abstract class HttpBase implements Protocol {
 	public ProtocolOutput getProtocolOutput(String url, WebPage page) {
 
 		try {
-			String host = null;
-			Response response = null; // make a
-			byte[] content = null;
-			URL u = null;
-			int code = 0;
-			Content c = null;
+			host = null;
+			response = null;
+			contents = null;
+			u = null;
+			code = 0;
+			c = null;
 
 			if (url.indexOf("graph.facebook") > 0) {
-				String access_token_string = "access_token=";
-				int index = url.indexOf(access_token_string);
-				int access_token_end_index = url.indexOf('&');
-				if (access_token_end_index < 0)
-					access_token_end_index = url.length();
-				if (index > 0) {
-					String prefix = url.substring(0, index
-							+ access_token_string.length());
-					String suffix = url.substring(index
-							+ access_token_string.length(),
-							access_token_end_index);
-					String rest = url.substring(access_token_end_index);
-					url = prefix + URLEncoder.encode(suffix, "UTF-8") + rest;
-				}
-				System.err.println("USING:" + url);
-				DefaultHttpClient client = new DefaultHttpClient();
-				HttpGet get = new HttpGet(url);
-				HttpResponse response1 = client.execute(get);
-				HttpEntity entity = response1.getEntity();
-				String result = EntityUtils.toString(entity);
-				System.err.println(result);
-				ByteBuffer buffer = toByteBUffer(result);
-
-				u = new URL(url);
-				code = response1.getStatusLine().getStatusCode();
-				content = buffer.array();
-				String contentType = response1.getFirstHeader("Content-Type")
-						.getValue();
-
-				Metadata headers = new SpellCheckedMetadata();
-				Header[] allHeaders = response1.getAllHeaders();
-				for (int i = 0; i < allHeaders.length; i++) {
-					headers.add(allHeaders[i].getName(), allHeaders[i]
-							.getValue());
-				}
-				c = new Content(u.toString(), u.toString(),
-						(content == null ? EMPTY_CONTENT : content),
-						contentType, headers, mimeTypes);
-
+				url = handleFaceBookContent(url);
+			} else if (url.indexOf("api.twitter.com") > 0) {
+				handleTwitterContent(url);
 			} else {
-				u = new URL(url);
-				response = getResponse(u, page, false);
-				code = response.getCode();
-				content = response.getContent();
-				c = new Content(u.toString(), u.toString(),
-						(content == null ? EMPTY_CONTENT : content), response
-								.getHeader("Content-Type"), response
-								.getHeaders(), mimeTypes);
+				handleSiteContent(url, page);
 			}
 			// request
 
@@ -283,6 +271,202 @@ public abstract class HttpBase implements Protocol {
 			return new ProtocolOutput(null, ProtocolStatusUtils.makeStatus(
 					ProtocolStatusCodes.EXCEPTION, e.toString()));
 		}
+	}
+
+	private void handleTwitterContent(String url) throws MalformedURLException,
+			TwitterException, UnsupportedEncodingException {
+		// url = getTwitterUrl(url);
+		getTwitterResponse(url);
+		c = storeSiteContent(contents, u, contentType, headers);
+
+	}
+
+	private byte[] updateTwitterContent(HttpResponse response1) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private HttpResponse getTwitterResponse(String url)
+			throws MalformedURLException, TwitterException, UnsupportedEncodingException {
+		url = URLDecoder.decode(url, "UTF-8");
+		Map<String, String> map = getQueryParams(url);
+		String consumerKey = map.get("consumer_key");
+		String consumerSecret = map.get("consumer_secret");
+		String accessToken = map.get("oauth_key");
+		String accessTokenSecret = map.get("oauth_secret");
+
+		Twitter twitter = getTwitterInstance(consumerKey, consumerSecret,
+				accessToken, accessTokenSecret);
+		Paging paging = new Paging();
+		paging.setCount(10);
+		twitter4j.internal.http.HttpResponse twitterResponse;
+		String result = null;
+		if (!(url.indexOf("statuses/show.json") >= 0)) {
+			String max_id = map.get("max_id");
+			if (null != max_id)
+				paging.setMaxId(Long.parseLong(max_id));
+			ResponseList<Status> homeTimeline = twitter.getUserTimeline(paging);
+			twitterResponse = homeTimeline.getResponse();
+			result = twitterResponse.asJSONArray().toString();
+		} else {
+			String id = map.get("id");
+			Long statusId = Long.parseLong(id);
+			Status status = twitter.showStatus(statusId);
+			twitterResponse = status.getResponse();
+			result = twitterResponse.asJSONObject().toString();
+		}
+
+		u = new URL(twitterResponse.getRequestURL());
+		code = twitterResponse.getStatusCode();
+		ByteBuffer buffer = toByteBUffer(result);
+		contents = buffer.array();
+		contentType = "text/javascript";
+
+		headers = new SpellCheckedMetadata();
+		Map<String, List<String>> responseHeaders = twitterResponse
+				.getResponseHeaderFields();
+		for (String key : responseHeaders.keySet()) {
+			List<String> values = responseHeaders.get(key);
+			for (String value : values) {
+				if (null == key)
+					continue;
+				if (null == value)
+					continue;
+				headers.add(key, value);
+			}
+		}
+		return null;
+	}
+
+	private Map<String, String> getQueryParams(String url) {
+		String query = url.substring(url.indexOf("?") + 1);
+		String[] params = query.split("&");
+		Map<String, String> map = new HashMap<String, String>();
+		for (String param : params) {
+			String name = param.split("=")[0];
+			String value = param.split("=")[1];
+			map.put(name, value);
+			System.out.println(name + " " + value);
+		}
+		return map;
+	}
+
+	private Twitter getTwitterInstance(String consumerKey,
+			String consumerSecret, String accessToken, String accessTokenSecret) {
+		TwitterFactory tf = getTwitterFactoryWithConfigParams(consumerKey,
+				consumerSecret, accessToken, accessTokenSecret);
+
+		Twitter twitter = tf.getInstance();
+		return twitter;
+	}
+
+	private TwitterFactory getTwitterFactoryWithConfigParams(
+			String consumerKey, String consumerSecret, String accessToken,
+			String accessTokenSecret) {
+		ConfigurationBuilder cb = new ConfigurationBuilder();
+		cb.setDebugEnabled(true).setOAuthConsumerKey(consumerKey)
+				.setOAuthConsumerSecret(consumerSecret).setOAuthAccessToken(
+						accessToken).setOAuthAccessTokenSecret(
+						accessTokenSecret).setPrettyDebugEnabled(true);
+		TwitterFactory tf = new TwitterFactory(cb.build());
+		return tf;
+	}
+
+	private void handleSiteContent(String url, WebPage page)
+			throws MalformedURLException, ProtocolException, IOException {
+		u = new URL(url);
+		response = getResponse(u, page, false);
+		code = response.getCode();
+		contents = response.getContent();
+		c = new Content(u.toString(), u.toString(),
+				(contents == null ? EMPTY_CONTENT : contents), response
+						.getHeader("Content-Type"), response.getHeaders(),
+				mimeTypes);
+	}
+
+	private String handleFaceBookContent(String url)
+			throws UnsupportedEncodingException, MalformedURLException,
+			IOException, ClientProtocolException {
+		url = getFaceBookUrl(url);
+		u = new URL(url);
+
+		HttpResponse response1 = getFacebookResponse(url);
+		code = response1.getStatusLine().getStatusCode();
+		contents = updateFacebookContent(response1);
+		contentType = getContentType(response1);
+		headers = getHeaders(response1);
+
+		c = storeSiteContent(contents, u, contentType, headers);
+		return url;
+	}
+
+	private byte[] updateFacebookContent(HttpResponse response1)
+			throws IOException {
+		byte[] content;
+		HttpEntity entity = response1.getEntity();
+		ByteBuffer buffer = convertFacebookResponseToByteBuffer(entity);
+		content = buffer.array();
+		return content;
+	}
+
+	private String getContentType(HttpResponse response1) {
+		String contentType = response1.getFirstHeader("Content-Type")
+				.getValue();
+		return contentType;
+	}
+
+	private Metadata getHeaders(HttpResponse response1) {
+		Metadata headers = new SpellCheckedMetadata();
+		Header[] allHeaders = response1.getAllHeaders();
+		for (int i = 0; i < allHeaders.length; i++) {
+			headers.add(allHeaders[i].getName(), allHeaders[i].getValue());
+		}
+		return headers;
+	}
+
+	private Content storeSiteContent(byte[] content, URL u, String contentType,
+			Metadata headers) {
+		Content c;
+		c = new Content(u.toString(), u.toString(),
+				(content == null ? EMPTY_CONTENT : content), contentType,
+				headers, mimeTypes);
+		return c;
+	}
+
+	private ByteBuffer convertFacebookResponseToByteBuffer(HttpEntity entity)
+			throws IOException {
+		String result = EntityUtils.toString(entity);
+
+		System.err.println(result);
+		ByteBuffer buffer = toByteBUffer(result);
+		return buffer;
+	}
+
+	private HttpResponse getFacebookResponse(String url) throws IOException,
+			ClientProtocolException {
+		DefaultHttpClient client = new DefaultHttpClient();
+		HttpGet get = new HttpGet(url);
+		HttpResponse response1 = client.execute(get);
+		return response1;
+	}
+
+	private String getFaceBookUrl(String url)
+			throws UnsupportedEncodingException {
+		String access_token_string = "access_token=";
+		int index = url.indexOf(access_token_string);
+		int access_token_end_index = url.indexOf('&');
+		if (access_token_end_index < 0)
+			access_token_end_index = url.length();
+		if (index > 0) {
+			String prefix = url.substring(0, index
+					+ access_token_string.length());
+			String suffix = url.substring(index + access_token_string.length(),
+					access_token_end_index);
+			String rest = url.substring(access_token_end_index);
+			url = prefix + URLEncoder.encode(suffix, "UTF-8") + rest;
+		}
+		System.err.println("USING:" + url);
+		return url;
 	}
 
 	/*

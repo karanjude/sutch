@@ -17,6 +17,8 @@
 package org.apache.nutch.crawl;
 
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -235,6 +237,7 @@ public class InjectorJob extends NutchTool implements Tool {
 	}
 
 	public Map<String, Object> run(Map<String, Object> args) throws Exception {
+		System.err.println("in.............................");
 		getConf().setLong("injector.current.time", System.currentTimeMillis());
 		Path input;
 		Object path = args.get(Nutch.ARG_SEEDDIR);
@@ -247,6 +250,15 @@ public class InjectorJob extends NutchTool implements Tool {
 		HashMap<String, CrawlingStrategy> crawlerPlugins = (HashMap<String, CrawlingStrategy>) args
 				.get(Crawler.CRAWLERS);
 		System.err.println("crawler plugins : " + crawlerPlugins.values());
+        ClassLoader sysClassLoader = ClassLoader.getSystemClassLoader();
+
+        //Get the URLs
+        URL[] urls = ((URLClassLoader)sysClassLoader).getURLs();
+
+        for(int i=0; i< urls.length; i++)
+        {
+            System.err.println(urls[i].getFile());
+        }     
 		for (CrawlingStrategy crawlingPlugin : crawlerPlugins.values()) {
 			numJobs = 2;
 			currentJobNum = 0;
@@ -255,6 +267,7 @@ public class InjectorJob extends NutchTool implements Tool {
 					+ input);
 
 			crawlingPlugin.setUpInputFormat(currentJob, input);
+
 			currentJob.setMapperClass(crawlingPlugin.getMapperClass());
 			currentJob.setMapOutputKeyClass(crawlingPlugin.getOutputKeyClass());
 			currentJob.setMapOutputValueClass(crawlingPlugin
@@ -263,6 +276,7 @@ public class InjectorJob extends NutchTool implements Tool {
 					.getOutputFormatClass());
 			DataStore<String, WebPage> store = StorageUtils.createWebStore(
 					currentJob.getConfiguration(), String.class, WebPage.class);
+			 //Get the System Classloader
 			GoraOutputFormat.setOutput(currentJob, store, true);
 			currentJob.setReducerClass(Reducer.class);
 			currentJob.setNumReduceTasks(0);

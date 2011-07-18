@@ -33,7 +33,9 @@ import java.nio.charset.CharsetEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import org.apache.avro.util.Utf8;
 import org.apache.hadoop.conf.Configuration;
@@ -61,9 +63,14 @@ import org.apache.tika.parser.Parser;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.mortbay.util.UrlEncoded;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.DocumentFragment;
+
+import twitter4j.ResponseList;
+import twitter4j.Status;
+import twitter4j.internal.json.DataObjectFactoryUtil;
 
 /**
  * Wrapper for Tika parsers. Mimics the HTMLParser but using the XHTML
@@ -181,7 +188,7 @@ public class TikaParser implements org.apache.nutch.parse.Parser {
 		Parser parser = tikaConfig.getParser(mimeType);
 		byte[] raw = page.getContent().array();
 		boolean skip = false;
-		if (url.indexOf("graph.facebook") > 0) {
+		if (url.indexOf("graph.facebook") > 0 || url.indexOf("api.twitter") > 0) {
 			skip = true;
 		}
 
@@ -194,7 +201,18 @@ public class TikaParser implements org.apache.nutch.parse.Parser {
 		}
 		Parse parse = null;
 		if (skip) {
-			parse = processFaceBookResponse(url, page, parse);
+			if (url.indexOf("api.twitter") > 0) {
+				try {
+					parse = processTwitterResponse(url, page, parse);
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				} catch (JSONException e) {
+					e.printStackTrace();
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+			} else
+				parse = processFaceBookResponse(url, page, parse);
 		} else {
 			LOG.debug("Using Tika parser " + parser.getClass().getName()
 					+ " for mime-type " + mimeType);
@@ -298,6 +316,85 @@ public class TikaParser implements org.apache.nutch.parse.Parser {
 			}
 		}
 		return parse;
+	}
+
+	private Map<String, String> getQueryParams(String url) {
+		String query = url.substring(url.indexOf("?") + 1);
+		String[] params = query.split("&");
+		Map<String, String> map = new HashMap<String, String>();
+		for (String param : params) {
+			String name = param.split("=")[0];
+			String value = param.split("=")[1];
+			map.put(name, value);
+			System.out.println(name + " " + value);
+		}
+		return map;
+	}
+
+	private Parse processTwitterResponse(String url, WebPage page, Parse parse)
+			throws JSONException, MalformedURLException,
+			UnsupportedEncodingException {
+		ArrayList<Outlink> outlinks = new ArrayList<Outlink>();
+		System.err.println("USING:" + url);
+		ByteBuffer buffer = page.getContent();
+		String result = toString(buffer);
+		System.err.println(result);
+
+		JSONArray list;
+		try {
+			list = new JSONArray(result);
+		} catch (JSONException e) {
+			list = new JSONArray();
+		}
+		
+		Map<String, String> map = getQueryParams(url);
+		String consumerKey = map.get("consumer_key");
+		String consumerSecret = map.get("consumer_secret");
+		String accessToken = map.get("oauth_key");
+		String accessTokenSecret = map.get("oauth_secret");
+
+		int size = list.length();
+		for (int i = 0; i < size; i++) {
+			JSONObject json = list.getJSONObject(i);
+			outlinks.add(new Outlink(makeTweetUrl(json, consumerKey,
+					consumerSecret, accessToken, accessTokenSecret), ""));
+			if (i == size - 1) {
+				outlinks.add(new Outlink(fetchMoreTweetsUrl(json, consumerKey,
+						consumerSecret, accessToken, accessTokenSecret), ""));
+			}
+		}
+
+		Outlink[] links = new Outlink[0];
+		if (outlinks.size() > 0)
+			links = outlinks.toArray(new Outlink[outlinks.size()]);
+		ParseStatus status = ParseStatusUtils.STATUS_SUCCESS;
+		status.setMajorCode(ParseStatusCodes.SUCCESS);
+		status.setMinorCode(ParseStatusCodes.SUCCESS_OK);
+		parse = new Parse("twitter text", "twitter title", links, status);
+		return parse;
+	}
+
+	private String fetchMoreTweetsUrl(JSONObject json, String customerKey,
+			String customerSecret, String oauthToken, String oauthTokenSecret)
+			throws JSONException, UnsupportedEncodingException {
+		Long id = json.getLong("id");
+		String p1 = "https://api.twitter.com/1/statuses/user_timeline.json?max_id=";
+		String p2 = id + "&consumer_key=" + customerKey + "&consumer_secret="
+				+ customerSecret + "&oauth_key=" + oauthToken
+				+ "&oauth_secret=" + oauthTokenSecret;
+		return p1 + URLEncoder.encode(p2, "UTF-8");
+	}
+
+	private String makeTweetUrl(JSONObject json, String customerKey,
+			String customerSecret, String oauthToken, String oauthTokenSecret)
+			throws JSONException, UnsupportedEncodingException {
+		Long id = json.getLong("id");
+		String p1 = "http://api.twitter.com/1/statuses/show.json?id=";
+		String p2 = id + "&consumer_key=" + customerKey + "&consumer_secret="
+				+ customerSecret + "&oauth_key=" + oauthToken
+				+ "&oauth_secret=" + oauthTokenSecret;
+		return p1 + URLEncoder.encode(p2, "UTF-8");
+
 	}
 
 	private Parse processFaceBookResponse(String url, WebPage page, Parse parse) {

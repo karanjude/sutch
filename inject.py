@@ -6,7 +6,7 @@ select_cursor = conn.cursor()
 
 seeds_file=open(os.path.join("seeds","urls"),"w")
 
-select_cursor.execute("select * from authentication where used=0")
+select_cursor.execute("select * from authentication")
 for data in select_cursor.fetchall():
     access_token = data[0]
     company = data[1]
