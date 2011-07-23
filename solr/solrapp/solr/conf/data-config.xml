@@ -6,7 +6,7 @@
               password=""/>
   <document>
     <entity name="id" 
-            query="select id, baseUrl,  CAST(content as CHAR(50000) ) as content from webpage">
+            query="select id, baseUrl as url,  CAST(content as CHAR(50000) ) as content from webpage">
     </entity>
   </document>
 </dataConfig>

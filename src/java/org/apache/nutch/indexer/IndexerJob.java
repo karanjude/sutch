@@ -98,6 +98,8 @@ public abstract class IndexerJob extends NutchTool implements Tool {
     columns.addAll(filters.getFields());
     ScoringFilters scoringFilters = new ScoringFilters(conf);
     columns.addAll(scoringFilters.getFields());
+    columns.add(WebPage.Field.CONTENT);
+    System.err.println("added content field");
     return columns;
   }
 

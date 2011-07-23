@@ -17,6 +17,9 @@
 package org.apache.nutch.indexer;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
 
 import org.apache.avro.util.Utf8;
 import org.slf4j.Logger;
@@ -31,78 +34,105 @@ import org.apache.nutch.util.StringUtil;
 import org.apache.nutch.util.TableUtil;
 import org.apache.gora.store.DataStore;
 
-public class IndexerReducer
-extends Reducer<String, WebPage, String, NutchDocument> {
+public class IndexerReducer extends
+		Reducer<String, WebPage, String, NutchDocument> {
 
-  public static final Logger LOG = IndexerJob.LOG;
+	public static final Logger LOG = IndexerJob.LOG;
 
-  private IndexingFilters filters;
+	private IndexingFilters filters;
 
-  private ScoringFilters scoringFilters;
+	private ScoringFilters scoringFilters;
 
-  private DataStore<String, WebPage> store;
+	private DataStore<String, WebPage> store;
 
-  @Override
-  protected void setup(Context context) throws IOException {
-    Configuration conf = context.getConfiguration();
-    filters = new IndexingFilters(conf);
-    scoringFilters = new ScoringFilters(conf);
-    try {
-      store = StorageUtils.createDataStore(conf, String.class, WebPage.class);
-    } catch (ClassNotFoundException e) {
-      throw new IOException(e);
-    }
-  }
+	@Override
+	protected void setup(Context context) throws IOException {
+		Configuration conf = context.getConfiguration();
+		filters = new IndexingFilters(conf);
+		scoringFilters = new ScoringFilters(conf);
+		try {
+			store = StorageUtils.createDataStore(conf, String.class,
+					WebPage.class);
+		} catch (ClassNotFoundException e) {
+			throw new IOException(e);
+		}
+	}
 
-  @Override
-  protected void reduce(String key, Iterable<WebPage> values,
-      Context context) throws IOException, InterruptedException {
-    WebPage page = values.iterator().next();
-    NutchDocument doc = new NutchDocument();
+	public static Charset charset = Charset.forName("UTF-8");
+	public static CharsetDecoder decoder = charset.newDecoder();
 
-    doc.add("id", key);
-    doc.add("digest", StringUtil.toHexString(page.getSignature().array()));
+	public static String toString(ByteBuffer buffer) {
+		String data = "";
+		try {
+			int old_position = buffer.position();
+			decoder.reset();
+			data = decoder.decode(buffer).toString();
+			// reset buffer's position to its original so it is not altered:
+			buffer.position(old_position);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		}
+		return data;
+	}
 
-    String url = TableUtil.unreverseUrl(key);
+	@Override
+	protected void reduce(String key, Iterable<WebPage> values, Context context)
+			throws IOException, InterruptedException {
+		WebPage page = values.iterator().next();
+		NutchDocument doc = new NutchDocument();
 
-    if (LOG.isDebugEnabled()) {
-      LOG.debug("Indexing URL: " + url);
-    }
+		//System.err.println(toString(page.getContent()));
+		doc.add("id", key);
+		doc.add("digest", StringUtil.toHexString(page.getSignature().array()));
+		//doc.add("content", cdata(toString(page.getContent())));
 
-    try {
-      doc = filters.filter(doc, url, page);
-    } catch (IndexingException e) {
-      LOG.warn("Error indexing "+key+": "+e);
-      return;
-    }
+		String url = TableUtil.unreverseUrl(key);
 
-    // skip documents discarded by indexing filters
-    if (doc == null) return;
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Indexing URL: " + url);
+		}
 
-    float boost = 1.0f;
-    // run scoring filters
-    try {
-      boost = scoringFilters.indexerScore(url, doc, page, boost);
-    } catch (final ScoringFilterException e) {
-      LOG.warn("Error calculating score " + key + ": " + e);
-      return;
-    }
+		try {
+			System.err.println("about to call filter..");
+			doc = filters.filter(doc, url, page);
+		} catch (IndexingException e) {
+			LOG.warn("Error indexing " + key + ": " + e);
+			return;
+		}
 
-    doc.setScore(boost);
-    // store boost for use by explain and dedup
-    doc.add("boost", Float.toString(boost));
+		// skip documents discarded by indexing filters
+		if (doc == null)
+			return;
 
-    Utf8 mark = Mark.UPDATEDB_MARK.checkMark(page);
-    if (mark != null) {
-      Mark.INDEX_MARK.putMark(page, Mark.UPDATEDB_MARK.checkMark(page));
-      store.put(key, page);
-    }
-    context.write(key, doc);
-  }
+		float boost = 1.0f;
+		// run scoring filters
+		try {
+			boost = scoringFilters.indexerScore(url, doc, page, boost);
+		} catch (final ScoringFilterException e) {
+			LOG.warn("Error calculating score " + key + ": " + e);
+			return;
+		}
 
-  @Override
-  public void cleanup(Context context) throws IOException {
-    store.close();
-  }
+		doc.setScore(boost);
+		// store boost for use by explain and dedup
+		doc.add("boost", Float.toString(boost));
+
+		Utf8 mark = Mark.UPDATEDB_MARK.checkMark(page);
+		if (mark != null) {
+			Mark.INDEX_MARK.putMark(page, Mark.UPDATEDB_MARK.checkMark(page));
+			store.put(key, page);
+		}
+		context.write(key, doc);
+	}
+
+	private String cdata(String string) {
+		return "<![CDATA[" + string + "]]>";
+	}
+
+	@Override
+	public void cleanup(Context context) throws IOException {
+		store.close();
+	}
 
 }

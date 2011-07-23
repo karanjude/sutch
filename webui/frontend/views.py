@@ -14,7 +14,7 @@ import oauth.oauth as oauth
 import md5
 
 MAX_COUNT = 10
-FACEBOOK_CALLBACK_URL = "http://107.20.249.171"
+CALLBACK_URL = 'http://4ud6.localtunnel.com'
 
 # settings for the local test consumer
 SERVER = 'api.twitter.com'
@@ -27,12 +27,11 @@ CONSUMER_SECRET = '8ptfNmTYsyJdkUerzV5uFlevs74y4Qq55WUL50boTe4'
 REQUEST_TOKEN_URL = 'https://api.twitter.com/oauth/request_token'
 ACCESS_TOKEN_URL = 'https://api.twitter.com/oauth/access_token'
 AUTHORIZATION_URL = 'https://photos.example.net/authorize'
-CALLBACK_URL = 'http://4n8h.localtunnel.com'
-
 
 # facebook credentials
 FACEBOOK_APP_ID = "136358823108222"
 FACEBOOK_APP_SECRET = "e559f722b145f598b1d507021cfd6245"
+FACEBOOK_CALLBACK_URL = CALLBACK_URL + "/facebook"
 
 #solr config
 SOLR_REQUEST_URL = "http://localhost:8983/solr/select/?q=%s&version=2.2&start=%s&rows=10&indent=on&wt=json"

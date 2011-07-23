@@ -10,7 +10,7 @@ n=1
 # number of selected urls for fetching
 maxUrls=50000
 # solr server
-solrUrl=http://localhost:8983
+solrUrl=http://0.0.0.0:8983
                                                                                                                                                                                                                                                                                                                                                                       
 for (( i = 1 ; i <= $n ; i++ ))
 do

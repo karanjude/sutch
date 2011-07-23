@@ -25,6 +25,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
+import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
@@ -150,14 +151,9 @@ public abstract class HttpBase implements Protocol {
 
 	private Metadata headers;
 
-	public static ByteBuffer toByteBUffer(String msg) {
-		try {
+	public static ByteBuffer toByteBUffer(String msg) throws CharacterCodingException {
 			encoder.reset();
 			return encoder.encode(CharBuffer.wrap(msg));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 	// Inherited Javadoc
@@ -196,7 +192,13 @@ public abstract class HttpBase implements Protocol {
 			if (url.indexOf("graph.facebook") > 0) {
 				url = handleFaceBookContent(url);
 			} else if (url.indexOf("api.twitter.com") > 0) {
-				handleTwitterContent(url);
+				try {
+					handleTwitterContent(url);
+				} catch (TwitterException e) {
+					e.printStackTrace(System.err);
+					code = e.getStatusCode();
+					c = null;
+				}
 			} else {
 				handleSiteContent(url, page);
 			}
@@ -274,7 +276,7 @@ public abstract class HttpBase implements Protocol {
 	}
 
 	private void handleTwitterContent(String url) throws MalformedURLException,
-			TwitterException, UnsupportedEncodingException {
+			TwitterException, UnsupportedEncodingException, CharacterCodingException {
 		// url = getTwitterUrl(url);
 		getTwitterResponse(url);
 		c = storeSiteContent(contents, u, contentType, headers);
@@ -287,7 +289,7 @@ public abstract class HttpBase implements Protocol {
 	}
 
 	private HttpResponse getTwitterResponse(String url)
-			throws MalformedURLException, TwitterException, UnsupportedEncodingException {
+			throws MalformedURLException, TwitterException, UnsupportedEncodingException, CharacterCodingException {
 		url = URLDecoder.decode(url, "UTF-8");
 		Map<String, String> map = getQueryParams(url);
 		String consumerKey = map.get("consumer_key");

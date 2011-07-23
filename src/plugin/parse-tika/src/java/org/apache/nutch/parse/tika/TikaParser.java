@@ -187,7 +187,7 @@ public class TikaParser implements org.apache.nutch.parse.Parser {
 		String mimeType = page.getContentType().toString();
 		Parser parser = tikaConfig.getParser(mimeType);
 		byte[] raw = page.getContent().array();
-		boolean skip = false;
+		boolean skip = true;
 		if (url.indexOf("graph.facebook") > 0 || url.indexOf("api.twitter") > 0) {
 			skip = true;
 		}
@@ -335,6 +335,7 @@ public class TikaParser implements org.apache.nutch.parse.Parser {
 			throws JSONException, MalformedURLException,
 			UnsupportedEncodingException {
 		ArrayList<Outlink> outlinks = new ArrayList<Outlink>();
+		url = URLDecoder.decode(url, "UTF-8");
 		System.err.println("USING:" + url);
 		ByteBuffer buffer = page.getContent();
 		String result = toString(buffer);
@@ -356,12 +357,13 @@ public class TikaParser implements org.apache.nutch.parse.Parser {
 		int size = list.length();
 		for (int i = 0; i < size; i++) {
 			JSONObject json = list.getJSONObject(i);
-			outlinks.add(new Outlink(makeTweetUrl(json, consumerKey,
-					consumerSecret, accessToken, accessTokenSecret), ""));
 			if (i == size - 1) {
 				outlinks.add(new Outlink(fetchMoreTweetsUrl(json, consumerKey,
 						consumerSecret, accessToken, accessTokenSecret), ""));
+				continue;
 			}
+			outlinks.add(new Outlink(makeTweetUrl(json, consumerKey,
+					consumerSecret, accessToken, accessTokenSecret), ""));
 		}
 
 		Outlink[] links = new Outlink[0];

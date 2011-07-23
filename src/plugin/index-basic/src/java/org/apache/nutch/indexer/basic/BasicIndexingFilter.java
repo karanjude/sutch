@@ -20,6 +20,8 @@ package org.apache.nutch.indexer.basic;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -38,96 +40,122 @@ import org.apache.solr.common.util.DateUtil;
 
 /** Adds basic searchable fields to a document. */
 public class BasicIndexingFilter implements IndexingFilter {
-  public static final Logger LOG = LoggerFactory.getLogger(BasicIndexingFilter.class);
+	public static final Logger LOG = LoggerFactory
+			.getLogger(BasicIndexingFilter.class);
 
-  private int MAX_TITLE_LENGTH;
-  private Configuration conf;
+	private int MAX_TITLE_LENGTH;
+	private Configuration conf;
+	public static Charset charset = Charset.forName("UTF-8");
+	public static CharsetDecoder decoder = charset.newDecoder();
 
-  private static final Collection<WebPage.Field> FIELDS = new HashSet<WebPage.Field>();
+	private String cdata(String string) {
+		return "<![CDATA[" + string + "]]>";
+	}
 
-  static {
-    FIELDS.add(WebPage.Field.TITLE);
-    FIELDS.add(WebPage.Field.TEXT);
-    FIELDS.add(WebPage.Field.FETCH_TIME);
-  }
+	public static String toString(ByteBuffer buffer) {
+		String data = "";
+		try {
+			int old_position = buffer.position();
+			decoder.reset();
+			data = decoder.decode(buffer).toString();
+			// reset buffer's position to its original so it is not altered:
+			buffer.position(old_position);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		}
+		return data;
+	}
 
-  public NutchDocument filter(NutchDocument doc, String url, WebPage page)
-      throws IndexingException {
+	private static final Collection<WebPage.Field> FIELDS = new HashSet<WebPage.Field>();
 
-    String reprUrl = null;
-    if (page.isReadable(WebPage.Field.REPR_URL.getIndex())) {
-      reprUrl = TableUtil.toString(page.getReprUrl());
-    }
+	static {
+		FIELDS.add(WebPage.Field.TITLE);
+		FIELDS.add(WebPage.Field.TEXT);
+		FIELDS.add(WebPage.Field.FETCH_TIME);
+	}
 
-    String host = null;
-    try {
-      URL u;
-      if (reprUrl != null) {
-        u = new URL(reprUrl);
-      } else {
-        u = new URL(url);
-      }
-      host = u.getHost();
-    } catch (MalformedURLException e) {
-      throw new IndexingException(e);
-    }
+	public NutchDocument filter(NutchDocument doc, String url, WebPage page)
+			throws IndexingException {
 
-    if (host != null) {
-      // add host as un-stored, indexed and tokenized
-      doc.add("host", host);
-      // add site as un-stored, indexed and un-tokenized
-      doc.add("site", host);
-    }
+		String reprUrl = null;
+		if (page.isReadable(WebPage.Field.REPR_URL.getIndex())) {
+			reprUrl = TableUtil.toString(page.getReprUrl());
+		}
 
-    // url is both stored and indexed, so it's both searchable and returned
-    doc.add("url", reprUrl == null ? url : reprUrl);
+		String host = null;
+		try {
+			URL u;
+			if (reprUrl != null) {
+				u = new URL(reprUrl);
+			} else {
+				u = new URL(url);
+			}
+			host = u.getHost();
+		} catch (MalformedURLException e) {
+			throw new IndexingException(e);
+		}
 
-    if (reprUrl != null) {
-      // also store original url as both stored and indexes
-      doc.add("orig", url);
-    }
+		if (host != null) {
+			// add host as un-stored, indexed and tokenized
+			doc.add("host", host);
+			// add site as un-stored, indexed and un-tokenized
+			doc.add("site", host);
+		}
 
-    // content is indexed, so that it's searchable, but not stored in index
-    doc.add("content", TableUtil.toString(page.getText()));
+		// url is both stored and indexed, so it's both searchable and returned
+		doc.add("baseUrl", reprUrl == null ? url : reprUrl);
 
-    // title
-    String title = TableUtil.toString(page.getTitle());
-    if (title.length() > MAX_TITLE_LENGTH) { // truncate title if needed
-      title = title.substring(0, MAX_TITLE_LENGTH);
-    }
-    // add title indexed and stored so that it can be displayed
-    doc.add("title", title);
-    // add cached content/summary display policy, if available
-    ByteBuffer cachingRaw = page
-        .getFromMetadata(Nutch.CACHING_FORBIDDEN_KEY_UTF8);
-    String caching = (cachingRaw == null ? null : Bytes.toString(cachingRaw
-        .array()));
-    if (caching != null && !caching.equals(Nutch.CACHING_FORBIDDEN_NONE)) {
-      doc.add("cache", caching);
-    }
+		if (reprUrl != null) {
+			// also store original url as both stored and indexes
+			doc.add("orig", url);
+		}
 
-    // add timestamp when fetched, for deduplication
-    String tstamp = DateUtil.getThreadLocalDateFormat().format(new Date(page.getFetchTime()));
-    doc.add("tstamp", tstamp);
+		// content is indexed, so that it's searchable, but not stored in index
+		//doc.add("content", TableUtil.toString(page.getText()));
+		String content = cdata(toString(page.getContent()));
+		System.err.println("adding content :" + content);
+		doc.add("content", content);
 
-    return doc;
-  }
+		// title
+		String title = TableUtil.toString(page.getTitle());
+		if (title.length() > MAX_TITLE_LENGTH) { // truncate title if needed
+			title = title.substring(0, MAX_TITLE_LENGTH);
+		}
+		// add title indexed and stored so that it can be displayed
+		doc.add("title", title);
+		// add cached content/summary display policy, if available
+		ByteBuffer cachingRaw = page
+				.getFromMetadata(Nutch.CACHING_FORBIDDEN_KEY_UTF8);
+		String caching = (cachingRaw == null ? null : Bytes.toString(cachingRaw
+				.array()));
+		if (caching != null && !caching.equals(Nutch.CACHING_FORBIDDEN_NONE)) {
+			doc.add("cache", caching);
+		}
 
-  public void addIndexBackendOptions(Configuration conf) {
-  }
+		// add timestamp when fetched, for deduplication
+		String tstamp = DateUtil.getThreadLocalDateFormat().format(
+				new Date(page.getFetchTime()));
+		doc.add("tstamp", tstamp);
 
-  public void setConf(Configuration conf) {
-    this.conf = conf;
-    this.MAX_TITLE_LENGTH = conf.getInt("indexer.max.title.length", 100);
-  }
+		return doc;
+	}
 
-  public Configuration getConf() {
-    return this.conf;
-  }
+	public void addIndexBackendOptions(Configuration conf) {
+	}
 
-  @Override
-  public Collection<WebPage.Field> getFields() {
-    return FIELDS;
-  }
+	public void setConf(Configuration conf) {
+		this.conf = conf;
+		this.MAX_TITLE_LENGTH = conf.getInt("indexer.max.title.length", 100);
+	}
+
+	public Configuration getConf() {
+		return this.conf;
+	}
+
+	@Override
+	public Collection<WebPage.Field> getFields() {
+		return FIELDS;
+	}
 
 }

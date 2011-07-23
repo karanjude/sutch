@@ -250,15 +250,15 @@ public class InjectorJob extends NutchTool implements Tool {
 		HashMap<String, CrawlingStrategy> crawlerPlugins = (HashMap<String, CrawlingStrategy>) args
 				.get(Crawler.CRAWLERS);
 		System.err.println("crawler plugins : " + crawlerPlugins.values());
-        ClassLoader sysClassLoader = ClassLoader.getSystemClassLoader();
+        //ClassLoader sysClassLoader = ClassLoader.getSystemClassLoader();
 
         //Get the URLs
-        URL[] urls = ((URLClassLoader)sysClassLoader).getURLs();
+        //URL[] urls = ((URLClassLoader)sysClassLoader).getURLs();
 
-        for(int i=0; i< urls.length; i++)
-        {
-            System.err.println(urls[i].getFile());
-        }     
+        //for(int i=0; i< urls.length; i++)
+        //{
+        //    System.err.println(urls[i].getFile());
+        //}     
 		for (CrawlingStrategy crawlingPlugin : crawlerPlugins.values()) {
 			numJobs = 2;
 			currentJobNum = 0;

@@ -45,7 +45,7 @@ public class SolrIndexerJob extends IndexerJob {
 
   @Override
   public Map<String,Object> run(Map<String,Object> args) throws Exception {
-    String solrUrl = (String)args.get(Nutch.ARG_SOLR);
+	  String solrUrl = (String)args.get(Nutch.ARG_SOLR);
     String batchId = (String)args.get(Nutch.ARG_BATCH);
     NutchIndexWriterFactory.addClassToConf(getConf(), SolrWriter.class);
     getConf().set(SolrConstants.SERVER_URL, solrUrl);
