@@ -1,17 +1,11 @@
 import MySQLdb as mysql
 import os
+import config
 
-MYSQL_HOST_NAME = 'localhost'
-MYSQL_USER = 'root'
-MYSQL_USER_PASSWORD = ''
-MYSQL_DB = 'data'
-SEEDS_DIR = 'seeds'
-URLS_FILE = 'urls'
-
-conn = mysql.connect(MYSQL_HOST_NAME,MYSQL_USER,MYSQL_USER_PASSWORD,MYSQL_DB)
+conn = mysql.connect(config.MYSQL_HOST_NAME, config.MYSQL_USER, config.MYSQL_USER_PASSWORD, config.MYSQL_DB)
 select_cursor = conn.cursor()
 
-seeds_file=open(os.path.join(SEEDS_DIR,URLS_FILE),"w")
+seeds_file=open(os.path.join(config.SEEDS_DIR, config.URLS_FILE),"w")
 
 select_cursor.execute("select * from authentication where used = 0")
 for data in select_cursor.fetchall():
