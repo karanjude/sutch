@@ -44,78 +44,88 @@ import org.apache.gora.mapreduce.StringComparator;
 
 public abstract class IndexerJob extends NutchTool implements Tool {
 
-  public static final Logger LOG = LoggerFactory.getLogger(IndexerJob.class);
+	public static final Logger LOG = LoggerFactory.getLogger(IndexerJob.class);
 
-  private static final Collection<WebPage.Field> FIELDS = new HashSet<WebPage.Field>();
+	private static final Collection<WebPage.Field> FIELDS = new HashSet<WebPage.Field>();
 
-  private static final Utf8 REINDEX = new Utf8("-reindex");
+	private static final Utf8 REINDEX = new Utf8("-reindex");
 
-  static {
-    FIELDS.add(WebPage.Field.SIGNATURE);
-    FIELDS.add(WebPage.Field.PARSE_STATUS);
-    FIELDS.add(WebPage.Field.SCORE);
-    FIELDS.add(WebPage.Field.MARKERS);
-  }
-  
-  public static class IndexerMapper
-      extends GoraMapper<String, WebPage, String, WebPage> {
-    protected Utf8 batchId;
+	static {
+		FIELDS.add(WebPage.Field.SIGNATURE);
+		FIELDS.add(WebPage.Field.PARSE_STATUS);
+		FIELDS.add(WebPage.Field.SCORE);
+		FIELDS.add(WebPage.Field.MARKERS);
+	}
 
-    @Override
-    public void setup(Context context) throws IOException {
-      Configuration conf = context.getConfiguration();
-      batchId = new Utf8(conf.get(GeneratorJob.BATCH_ID, Nutch.ALL_BATCH_ID_STR));
-    }
+	public static class IndexerMapper extends
+			GoraMapper<String, WebPage, String, WebPage> {
+		protected Utf8 batchId;
+		static int ctr = 0;
 
-    @Override
-    public void map(String key, WebPage page, Context context)
-    throws IOException, InterruptedException {
-      ParseStatus pstatus = page.getParseStatus();
-      if (pstatus == null || !ParseStatusUtils.isSuccess(pstatus)
-          || pstatus.getMinorCode() == ParseStatusCodes.SUCCESS_REDIRECT) {
-        return; // filter urls not parsed
-      }
+		@Override
+		public void setup(Context context) throws IOException {
+			Configuration conf = context.getConfiguration();
+			batchId = new Utf8(conf.get(GeneratorJob.BATCH_ID,
+					Nutch.ALL_BATCH_ID_STR));
+		}
 
-      Utf8 mark = Mark.UPDATEDB_MARK.checkMark(page);
-      if (!batchId.equals(REINDEX)) {
-        if (!NutchJob.shouldProcess(mark, batchId)) {
-          if (LOG.isDebugEnabled()) {
-            LOG.debug("Skipping " + TableUtil.unreverseUrl(key) + "; different batch id");
-          }
-          return;
-        }
-      }
+		@Override
+		public void map(String key, WebPage page, Context context)
+				throws IOException, InterruptedException {
+			ParseStatus pstatus = page.getParseStatus();
+			Utf8 mark = Mark.UPDATEDB_MARK.checkMark(page);
 
-      context.write(key, page);
-    }    
-  }
+			boolean ismarked = null != mark;
 
+			boolean shouldSkip = pstatus == null
+					|| !ParseStatusUtils.isSuccess(pstatus)
+					|| pstatus.getMinorCode() == ParseStatusCodes.SUCCESS_REDIRECT;
 
-  private static Collection<WebPage.Field> getFields(Job job) {
-    Configuration conf = job.getConfiguration();
-    Collection<WebPage.Field> columns = new HashSet<WebPage.Field>(FIELDS);
-    IndexingFilters filters = new IndexingFilters(conf);
-    columns.addAll(filters.getFields());
-    ScoringFilters scoringFilters = new ScoringFilters(conf);
-    columns.addAll(scoringFilters.getFields());
-    columns.add(WebPage.Field.CONTENT);
-    System.err.println("added content field");
-    return columns;
-  }
+			if (!ismarked && shouldSkip) {
+				return; // filter urls not parsed
+			}
 
-  protected Job createIndexJob(Configuration conf, String jobName, String batchId)
-  throws IOException, ClassNotFoundException {
-    conf.set(GeneratorJob.BATCH_ID, batchId);
-    Job job = new NutchJob(conf, jobName);
-    // TODO: Figure out why this needs to be here
-    job.getConfiguration().setClass("mapred.output.key.comparator.class",
-        StringComparator.class, RawComparator.class);
+			if (!batchId.equals(REINDEX)) {
+				if (!NutchJob.shouldProcess(mark, batchId)) {
+					if (LOG.isDebugEnabled()) {
+						LOG.debug("Skipping " + TableUtil.unreverseUrl(key)
+								+ "; different batch id");
+					}
+					return;
+				}
+			}
 
-    Collection<WebPage.Field> fields = getFields(job);
-    StorageUtils.initMapperJob(job, fields, String.class, WebPage.class,
-        IndexerMapper.class);
-    job.setReducerClass(IndexerReducer.class);
-    job.setOutputFormatClass(IndexerOutputFormat.class);
-    return job;
-  }
+			System.err.println(ctr + " " + key);
+			ctr++;
+			context.write(key, page);
+		}
+	}
+
+	private static Collection<WebPage.Field> getFields(Job job) {
+		Configuration conf = job.getConfiguration();
+		Collection<WebPage.Field> columns = new HashSet<WebPage.Field>(FIELDS);
+		IndexingFilters filters = new IndexingFilters(conf);
+		columns.addAll(filters.getFields());
+		ScoringFilters scoringFilters = new ScoringFilters(conf);
+		columns.addAll(scoringFilters.getFields());
+		columns.add(WebPage.Field.CONTENT);
+		System.err.println("added content field");
+		return columns;
+	}
+
+	protected Job createIndexJob(Configuration conf, String jobName,
+			String batchId) throws IOException, ClassNotFoundException {
+		conf.set(GeneratorJob.BATCH_ID, batchId);
+		Job job = new NutchJob(conf, jobName);
+		// TODO: Figure out why this needs to be here
+		job.getConfiguration().setClass("mapred.output.key.comparator.class",
+				StringComparator.class, RawComparator.class);
+
+		Collection<WebPage.Field> fields = getFields(job);
+		StorageUtils.initMapperJob(job, fields, String.class, WebPage.class,
+				IndexerMapper.class);
+		job.setReducerClass(IndexerReducer.class);
+		job.setOutputFormatClass(IndexerOutputFormat.class);
+		return job;
+	}
 }

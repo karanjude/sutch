@@ -6,35 +6,33 @@ export NUTCH_HOME=./runtime/local
 #export HADOOP_HOME=~/Data/study/information-retrieval-and-web-search-engines/hadoop/hadoop-0.20.203.0/
 
 # depth in the web exploration
-n=3
+n=1
 # number of selected urls for fetching
 maxUrls=50000
 # solr server
 solrUrl=http://localhost:8983/solr
 
-echo "" > seeds/urls
+#echo "" > seeds/urls
 
-echo "injecting urls"
-python inject.py
-echo "created new seeds urls"
+#echo "injecting urls"
+#python inject.py
+#echo "created new seeds urls"
 
-echo "injecting new urls"
-$NUTCH_HOME/bin/nutch crawl seeds
-echo "injecting new urls done"
+#echo "injecting new urls"
+#$NUTCH_HOME/bin/nutch crawl seeds
+#echo "injecting new urls done"
 
-python notify_user.py
-python mark_as_used.py
 
-for (( i = 1 ; i <= $n ; i++ ))
-do
+#for (( i = 1 ; i <= $n ; i++ ))
+#do
 
 #log=`ls -rt runtime/local/logs/log* | tail -1`
 
 # Generate
 
-echo "generating new urls"
-$NUTCH_HOME/bin/nutch generate 
-echo "generate done"
+#echo "generating new urls"
+#$NUTCH_HOME/bin/nutch generate 
+#echo "generate done"
 
 #$batchId=`sed -n 's|.*batch id: \(.*\)|\1|p' < $log`
 #echo `cat $log | grep batch | perl -e '$t= <STDIN>;$t =~ "id:(.*)";$r=$1;$r=~ s/^\s+//;print $r;'`
@@ -48,19 +46,19 @@ batchId="-all"
 #log=$log2
 
 # Fetch
-echo "starting fetch";
-$NUTCH_HOME/bin/nutch fetch $batchId 
-echo "fetch done"
+#echo "starting fetch";
+#$NUTCH_HOME/bin/nutch fetch $batchId 
+#echo "fetch done"
 
 # Parse
-echo "starting parse"
-$NUTCH_HOME/bin/nutch parse $batchId 
-echo "parse done"
+#echo "starting parse"
+#$NUTCH_HOME/bin/nutch parse $batchId 
+#echo "parse done"
 
 # Update
-echo "starting db update"
-$NUTCH_HOME/bin/nutch updatedb 
-echo "update db done"
+#echo "starting db update"
+#$NUTCH_HOME/bin/nutch updatedb 
+#echo "update db done"
 
 
 #cat seeds\urls
@@ -68,4 +66,5 @@ echo "update db done"
 # Index
 $NUTCH_HOME/bin/nutch solrindex $solrUrl $batchId 
 
-done
+python notify_user.py
+#done
