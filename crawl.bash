@@ -2,9 +2,9 @@
 
 # Nutch crawl
 
-export NUTCH_HOME=./runtime/local
+export NUTCH_HOME=./runtime/deploy
 #export HADOOP_HOME=~/Data/study/information-retrieval-and-web-search-engines/hadoop/hadoop-0.20.203.0/
-
+export HADOOP_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5000"
 # depth in the web exploration
 n=1
 # number of selected urls for fetching
@@ -28,9 +28,9 @@ do
 
 # Generate
 
-echo "generating new urls"
-$NUTCH_HOME/bin/nutch generate 
-echo "generate done"
+#echo "generating new urls"
+#$NUTCH_HOME/bin/nutch generate 
+#echo "generate done"
 
 #$batchId=`sed -n 's|.*batch id: \(.*\)|\1|p' < $log`
 #echo `cat $log | grep batch | perl -e '$t= <STDIN>;$t =~ "id:(.*)";$r=$1;$r=~ s/^\s+//;print $r;'`

@@ -12,9 +12,12 @@ import MySQLdb as mysql
 import httplib
 import oauth.oauth as oauth
 import md5
+import htmllib
+import cgi
 
 MAX_COUNT = 10
-CALLBACK_URL = 'http://4ud6.localtunnel.com'
+HOST = 'http://107.20.249.171/'
+TWITTER_CALLBACK_URL = HOST + 'twitter/do/'
 
 # settings for the local test consumer
 SERVER = 'api.twitter.com'
@@ -31,15 +34,16 @@ AUTHORIZATION_URL = 'https://photos.example.net/authorize'
 # facebook credentials
 FACEBOOK_APP_ID = "136358823108222"
 FACEBOOK_APP_SECRET = "e559f722b145f598b1d507021cfd6245"
-FACEBOOK_CALLBACK_URL = CALLBACK_URL + "/facebook"
+FACEBOOK_CALLBACK_URL = HOST + "facebook/do/"
 
 #solr config
-SOLR_REQUEST_URL = "http://localhost:8983/solr/select/?q=%s&version=2.2&start=%s&rows=10&indent=on&wt=json"
+SOLR_REQUEST_URL = "http://localhost:8983/solr/select/?q=%s&version=2.2&start=%s&rows=10&indent=on&fl=id,content&hl=true&hl.fl=content&wt=json"
+#SOLR_REQUEST_URL = "http://localhost:8983/solr/select/?q=%s&version=2.2&start=%s&rows=1&fl=baseUrl,content&hl=true&hl.fl=content&wt=json&indent=on"
 
 #mysql config
 MYSQL_HOST_NAME = 'localhost'
 MYSQL_USER = 'root'
-MYSQL_PASSWORD = ''
+MYSQL_PASSWORD = 'root'
 MYSQL_DB = 'data'
 
 def twitter(request):
@@ -53,7 +57,7 @@ def twitter(request):
 
 	consumer = oauth.OAuthConsumer(CONSUMER_KEY, CONSUMER_SECRET)
 	signature_method_hmac_sha1 = oauth.OAuthSignatureMethod_HMAC_SHA1()
-	oauth_request = oauth.OAuthRequest.from_consumer_and_token(consumer, callback=CALLBACK_URL, http_url=request_token_url)
+	oauth_request = oauth.OAuthRequest.from_consumer_and_token(consumer, callback=TWITTER_CALLBACK_URL, http_url=request_token_url)
 	
 	oauth_request.sign_request(signature_method_hmac_sha1, consumer, None)
 
@@ -74,7 +78,7 @@ def twitter(request):
 	url = 'http://api.twitter.com/oauth/authorize?oauth_token=' + token.key
 	print url
 	
-	file_name = "/tmp/sessions/%s" % (token.key)
+	file_name = "/home/ubuntu/sutch/sessions/%s" % (token.key)
 	f = open(file_name,"w")
 	f.write(token.to_string())
 	f.close()
@@ -88,7 +92,7 @@ def facebook(request):
 	print request.POST
 	print request.REQUEST
 	callback_url = FACEBOOK_CALLBACK_URL
-	url = "https://www.facebook.com/dialog/oauth?client_id=136358823108222&redirect_uri=%s/do/&scope=user_about_me,user_activities,user_birthday,user_checkins,email,read_stream,offline_access,publish_stream" % (callback_url)
+	url = "https://www.facebook.com/dialog/oauth?client_id=136358823108222&redirect_uri=%s&scope=user_about_me,user_activities,user_birthday,user_checkins,email,read_stream,offline_access,publish_stream" % (callback_url)
 	print "about to redirect to ", url
 	return HttpResponseRedirect(url)
 
@@ -98,7 +102,7 @@ def indextwitter(request):
 
 	print "session_data" , request.session.keys()
 
-	file_name = "/tmp/sessions/%s" % (oauth_token)
+	file_name = "/home/ubuntu/sutch/sessions/%s" % (oauth_token)
 	f = open(file_name)
 	request_token =  f.readline()
 	f.close()
@@ -165,9 +169,122 @@ def indextwitter(request):
 
 	return render_to_response('frontend/sutch.html',{'info':r})
 
+def unescape(s):
+	p = htmllib.HTMLParser(None)
+	p.save_bgn()
+	p.feed(s)
+	return p.save_end()
+
+import re
+from htmlentitydefs import name2codepoint
+
+def htmlentitydecode(s):
+	return re.sub('&(%s);' % '|'.join(name2codepoint), 
+		      lambda m: unichr(name2codepoint[m.group(1)]), s)
+
+def highlighted_message(s, company):
+	pat = ""
+	if company == "facebook":
+		pat = "message\":\"(.*?)(\"|$)"
+	elif company == "twitter":
+		pat = "text\":\"(.*?)(\"|$)"
+	r = re.findall(pat,s)
+	if len(r) > 0:
+		return r[0][0]
+	return ""
+
+
+def html_encode(s):
+	return s.replace('\'',"&apos;").replace('\n',"").replace('\r\n','')
+
+def make_message(url, c , highlighting):
+	message = ""
+	h_message = ""
+	company = ""
+	link = ""
+
+	c = c.replace("\x00","").replace("#0;","").replace("\u0000","").replace("<![CDATA[","").replace("]]>","")
+	r = {}
+	r['company'] = company
+	r['message'] = message
+	r['h_message'] = h_message
+	r['link'] = link
+
+	j = json.loads(c)
+
+	if url.startswith('com.facebook') and isinstance(j,dict):
+
+		if j.has_key('message'):
+			message = j['message']
+		
+		elif j.has_key('name'):
+			message = j['name']
+
+		if len(message) > 0:
+			link = j['actions'][0]['link']
+			h_message = highlighted_message(htmlentitydecode(highlighting[url]['content'][0]), 'facebook')
+		
+			r['company'] = 'facebook'
+			r['message'] = html_encode(message.strip())
+			r['h_message'] = html_encode(h_message.strip())
+			r['link'] = link
+
+	elif url.startswith('com.twitter') and isinstance(j , list) == False:
+
+		if j.has_key('text'):
+			message = j['text']
+
+			link = "http://twitter.com/#!/" + j["user"]["name"] + "/status/" + j["id_str"]
+
+			h_message = highlighted_message(htmlentitydecode(highlighting[url]['content'][0]), 'twitter')
+		
+			r['company'] = 'twitter'
+			r['message'] = html_encode(message.strip())
+			r['h_message'] = html_encode(h_message.strip())
+			r['link'] = link
+
+	#print r
+	return r
+														
+													      
 
 def sutch(request):
-	return render_to_response('frontend/sutch.html',{})
+	data = ""
+
+	if request.GET.has_key('q'):
+		q = request.GET['q']
+		q = q.strip()
+		url = SOLR_REQUEST_URL
+		c = 0
+		e_url = url % (q,c)
+		conn = urllib.urlopen(e_url)
+		data = conn.read()
+		data = data.replace("\x00","")
+		data = json.loads(data)
+		response = data['response']
+		highlighting = data['highlighting']
+		numFound = response['numFound']
+		start = response['start']
+
+		#print highlighting
+		data = []
+		for c in response['docs']:
+			m = make_message(c['id'], c['content'], highlighting)
+			if len(m['message']) > 0:
+				data.append(m)
+				
+	response = {}
+	if data and len(data) > 0:
+		#print simplejson.dumps(data)
+		response = {
+			'result' : simplejson.dumps(data),
+			'q' : q,
+			'start': start,
+			'found': numFound
+
+			}
+
+	return render_to_response('frontend/sutch.html', response)
 
 def do(request):
 	#print request.GET
@@ -176,7 +293,7 @@ def do(request):
 
 	code = request.REQUEST["code"]
 	callback_url = FACEBOOK_CALLBACK_URL
-	url = "https://graph.facebook.com/oauth/access_token?client_id=%s&redirect_uri=%s/do/&client_secret=%s&code=%s" % (FACEBOOK_APP_ID,callback_url,FACEBOOK_APP_SECRET,code)
+	url = "https://graph.facebook.com/oauth/access_token?client_id=%s&redirect_uri=%s&client_secret=%s&code=%s" % (FACEBOOK_APP_ID,callback_url,FACEBOOK_APP_SECRET,code)
 
 	#print 
 	#print url
@@ -217,26 +334,78 @@ def done(request):
 	print request.REQUEST
 	return HttpResponse("done")
 
+def make_result(x, response):
+	print response
+	print x
+	#baseUrl = x['baseUrl']
+	content = x['content'].replace("\x00","").replace("#0;","").replace("\u0000","").replace("<![CDATA[","").replace("]]>","")
+	#text = response['highlighting'][baseUrl]['content']
+	#print baseUrl
+	print content
+	#print text
+	print "\n\n\n\n"
+	return content
+
 def query(request):
-	q = request.POST['q']
-	c = request.POST['c']
-	q = q.strip()
-	c = c.strip()
-
-	url = SOLR_REQUEST_URL
-	e_url = url % (q,c)
-	conn = urllib.urlopen(e_url)
-	data = conn.read()
-	data = data.replace("\x00","")
-	data = json.loads(data)
-	data = [x for x in data['response']['docs']]
-	data = [x['content'].replace("\x00","").replace("\u0000","") for x in data]
-
+	data = ""
+	q = ""
 	response = {
-		'result': data
+		'result': data,
+		'q': q
 		}
 	response  = simplejson.dumps(response)
-	print response
+	
+	try:
+
+		if request.POST.has_key('q'):
+			q = request.POST['q']
+		else:
+			return HttpResponse(response , mimetype='application/json')
+
+		if request.POST.has_key('c'):
+			c = request.POST['c']
+		else:
+			c = 0
+
+		q = q.strip()
+		c = c.strip()
+
+		print q, c
+		url = SOLR_REQUEST_URL
+	#print url
+		if len(c) == 0:
+			c = 10
+		
+		e_url = url % (q,c)
+		print e_url
+
+		conn = urllib.urlopen(e_url)
+		data = conn.read()
+	
+		data = data.replace("\x00","")
+		data = json.loads(data)
+		response = data['response']
+		numFound = response['numFound']
+		start = response['start']
+		highlighting = data['highlighting']
+	
+        #print highlighting
+		data = []
+		for c in response['docs']:
+			m = make_message(c['id'], c['content'], highlighting)
+			if len(m['message']) > 0:
+				data.append(m)
+				
+		response = {
+			'result': data,
+			'q': q,
+			'start': start,
+			'found': numFound
+			}
+		response  = simplejson.dumps(response)
+	except Exception as e:
+		print e
+	#print response
 	return HttpResponse(response , mimetype='application/json')
 
 

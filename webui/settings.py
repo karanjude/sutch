@@ -55,7 +55,7 @@ SECRET_KEY = 'r*srg(50(6u&m)#=k)=qm9uh&9f0h77w1-vk(*v_0ts)lg$qk-'
 
 SESSION_ENGINE = "django.contrib.sessions.backends.file"
 SESSION_COOKIE_HTTPONLY = True
-SESSION_FILE_PATH = '/tmp/sessions'
+SESSION_FILE_PATH = '/home/ubuntu/sutch/sessions'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
