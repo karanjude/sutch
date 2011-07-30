@@ -1,4 +1,154 @@
 <html>
+{% include "plugins_javascript.html" %}
+{% include "main_js.html" %}
+<head>
+<style type="text/css">
+div.search {
+margin-left:auto;
+margin-right:auto;
+width: 40%;
+}
+
+.slink {margin: 10px 20px 10px 20px;}
+.rlink {margin: 10px 20px 10px 20px;}
+
+.info {
+margin: 10px 20px 10px 20px;
+font-size:60%;
+}
+
+.sinfo {
+margin: 10px 20px 10px 20px;
+font-size:60%;
+}
+
+
+</style>
+</head>
+
 <body>
+<script>
+  var count = 0;
+
+function addlink(item){
+   //console.log(item.message);console.log(item.company);
+  var container = $("<div></div>").addClass("rlink");
+  var metadata = $("<span></span>").html(item.h_message.replace(/&apos;/g,'')).addClass("sinfo");
+  var company = $("<span></span>").text(item.company).addClass("info");
+  var a = $("<a></a>").attr("href",item.link).text(item.message.replace(/&apos;/g,'')).addClass("slink").append(company);
+  container.append(a).append("</br>").append(metadata).hide().prependTo("#result").slideDown("slow");
+}
+
+$(document).ready(function() {
+
+{% if result %}
+  {% autoescape off %}
+  //alert('{{ result }}');
+  var items = $.parseJSON('{{ result }}');
+   //console.log(s);
+  $('[name=q]').val('{{ q }}');
+  
+$.each(items, function(i,item){
+  addlink(item);
+});
+   
+   {% endautoescape %}
+
+$("#c").text("Showing " + $(".rlink").length + " of " + {{ found }});
+
+{% endif %}
+
+
+
+});
+
+</script>
+
+{% if info %}
+ <script>
+  alert('{{ info }}');
+ </script>
+{% endif %}
+
+
+<div style='text-align:center;'><b>Sutch</b><span>____</span><span class='sinfo'>An Experimental Search Engine</span></div>
+<div>
+
+<form action="/query/q/" id="searchForm" style="background-color:black;padding:10px;">
+<label style="color:white;" >Query</label>
+<input type="text" style="border:1px solid;border-color:black;" name="q" id="q" size="100" value="" autocomplete="off"/>
+<input type="button" style="border:1px solid;border-color:white;color:white;background-color:black;" value="search" id="submit_button"/>
+<input type="button" style="border:1px solid;border-color:white;color:white;background-color:black;" value="More Results" id="more_button"/>
+</form>
+</div>
+
+
+<div id="signup">
+<span><b>Make Your </b></span>
+<a href="/facebook">Facebook</a>
+<span><b>|</b></span>
+<a href="/twitter">Twitter</a>
+<span><b>Data Searchable </b></span>
+<span id="c" style="float:right;"></span>
+<hr />
+
+</div>
+
+
+
+
+<div id="result"></div>
+
+<script>
+
+
+  function populate_data(url, term , count){
+  
+  $.post( url, { q: term , c: count},
+  function( data ) {
+  $.each(data.result, function(i,item){
+  addlink(item);
+  });
+  $("#c").text("Showing " + $(".rlink").length + " of " + data.found);
+  },
+  "json"
+  );
+
+ }
+
+  function process_submit_button(){
+  $("#result").empty();
+  var $form = $("#searchForm"),
+  term = $form.find( 'input[name="q"]' ).val(),
+  url = $form.attr( 'action' );
+  count = 0;
+  populate_data(url, term , count)
+  }
+
+  /* attach a submit handler to the form */
+  $("#searchForm").submit(function(event) {
+  event.preventDefault(); 
+  process_submit_button();
+  });
+
+  $("#submit_button").click(function(event) {
+  process_submit_button();
+  });
+
+  $("#more_button").click(function(event) {
+  var $form = $("#searchForm"),
+  term = $form.find( 'input[name="q"]' ).val(),
+  url = $form.attr( 'action' );
+  count = count + 10;
+  populate_data(url, term , count)
+  });
+
+
+</script>
+
+
+
+<div>
+</div>
 </body>
 </html>

@@ -37,7 +37,7 @@ FACEBOOK_APP_SECRET = "e559f722b145f598b1d507021cfd6245"
 FACEBOOK_CALLBACK_URL = HOST + "facebook/do/"
 
 #solr config
-SOLR_REQUEST_URL = "http://localhost:8983/solr/select/?q=%s&version=2.2&start=%s&rows=20&indent=on&fl=id,content&hl=true&hl.fl=content&wt=json"
+SOLR_REQUEST_URL = "http://localhost:8983/solr/select/?q=%s&version=2.2&start=%s&rows=10&indent=on&fl=id,content&hl=true&hl.fl=content&wt=json"
 #SOLR_REQUEST_URL = "http://localhost:8983/solr/select/?q=%s&version=2.2&start=%s&rows=1&fl=baseUrl,content&hl=true&hl.fl=content&wt=json&indent=on"
 
 #mysql config
@@ -88,28 +88,17 @@ def twitter(request):
 
 
 def facebook(request):
-	#print request.GET
-	#print request.POST
-	#print request.REQUEST
+	print request.GET
+	print request.POST
+	print request.REQUEST
 	callback_url = FACEBOOK_CALLBACK_URL
 	url = "https://www.facebook.com/dialog/oauth?client_id=136358823108222&redirect_uri=%s&scope=user_about_me,user_activities,user_birthday,user_checkins,email,read_stream,offline_access,publish_stream" % (callback_url)
 	print "about to redirect to ", url
 	return HttpResponseRedirect(url)
 
 def indextwitter(request):
-	oauth_token = None
-	verifier = None
-
-	if request.REQUEST.has_key('oauth_verifier') == True:
-		verifier = request.REQUEST['oauth_verifier']
-
-	if request.REQUEST.has_key('oauth_token')  == True:
-		oauth_token = request.REQUEST['oauth_token']
-
-	if verifier is None or oauth_token is None:
-		print "user denied twitter accesss"
-		return render_to_response('frontend/sutch.html',{})
-	
+	verifier = request.REQUEST['oauth_verifier']
+	oauth_token = request.REQUEST['oauth_token']
 
 	print "session_data" , request.session.keys()
 
@@ -120,8 +109,7 @@ def indextwitter(request):
 
 
 	if request_token is None or  len(request_token) == 0:
-		print "error registering for twitter"
-		return render_to_response('frontend/sutch.html',{})
+		return HttpResponse("error")
 
 	token = oauth.OAuthToken.from_string(request_token)
 	token.key = oauth_token
@@ -207,7 +195,7 @@ def highlighted_message(s, company):
 
 
 def html_encode(s):
-	return s.replace('\'',"&apos;").replace('\n',"").replace('\r\n','').replace('\r','')
+	return s.replace('\'',"&apos;").replace('\n',"").replace('\r\n','')
 
 def make_message(url, c , highlighting):
 	message = ""
@@ -223,7 +211,6 @@ def make_message(url, c , highlighting):
 	r['link'] = link
 
 	j = json.loads(c)
-	#print j
 
 	if url.startswith('com.facebook') and isinstance(j,dict):
 
@@ -285,13 +272,11 @@ def sutch(request):
 		highlighting = data['highlighting']
 		numFound = response['numFound']
 		start = response['start']
-		rows = 20
 
 		#print highlighting
 		data = []
 		for c in response['docs']:
 			m = make_message(c['id'], c['content'], highlighting)
-			#print m
 			if len(m['message']) > 0:
 				data.append(m)
 				
@@ -302,11 +287,9 @@ def sutch(request):
 			'result' : simplejson.dumps(data),
 			'q' : q,
 			'start': start,
-			'found': numFound,
-			'rows': rows
+			'found': numFound
 
 			}
-		#print response
 
 	return render_to_response('frontend/sutch.html', response)
 
@@ -315,14 +298,7 @@ def do(request):
 	#print request.POST
 	#print request.REQUEST
 
-	code = None
-	if request.REQUEST.has_key('code') == True:
-		code = request.REQUEST["code"]
-		
-	if code is None:
-		print 'user denied facebook access'
-		return render_to_response('frontend/sutch.html',{})
-
+	code = request.REQUEST["code"]
 	callback_url = FACEBOOK_CALLBACK_URL
 	url = "https://graph.facebook.com/oauth/access_token?client_id=%s&redirect_uri=%s&client_secret=%s&code=%s" % (FACEBOOK_APP_ID,callback_url,FACEBOOK_APP_SECRET,code)
 
@@ -333,13 +309,8 @@ def do(request):
 	d = u.read()
 
 	#print 
-	try:
-		access_token = d.split("access_token=")[1]
-	except Exception as e:
-		print e
-		print 'user denied access to facebook data'
-		return render_to_response('frontend/sutch.html',{})
-
+	access_token = d.split("access_token=")[1]
+	
 	conn = mysql.connect(MYSQL_HOST_NAME,MYSQL_USER,MYSQL_PASSWORD,MYSQL_DB)
 	cursor = conn.cursor()
 
@@ -422,8 +393,6 @@ def query(request):
 		data = json.loads(data)
 		response = data['response']
 		numFound = response['numFound']
-		rows = 20
-		  
 		start = response['start']
 		highlighting = data['highlighting']
 	
@@ -438,8 +407,7 @@ def query(request):
 			'result': data,
 			'q': q,
 			'start': start,
-			'found': numFound,
-			'rows' : rows
+			'found': numFound
 			}
 		response  = simplejson.dumps(response)
 	except Exception as e:
