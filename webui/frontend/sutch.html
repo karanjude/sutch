@@ -52,7 +52,9 @@ $(document).ready(function() {
 {% if result %}
   {% autoescape off %}
   //alert('{{ result }}');
-  var items = $.parseJSON('{{ result }}');
+  var r = '{{ result }}';
+  //alert(r);
+  var items = {{ result }};
    //console.log(s);
   $('[name=q]').val('{{ q }}');
   r_count = 0;
